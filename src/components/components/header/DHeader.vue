@@ -6,8 +6,10 @@
     </header>
     <section>
       <ul class="dheader-menulist">
-        <li v-for="(item, index) in items"
-            :key="index">
+        <li v-for="item in items"
+            :key="item.index"
+            @click="router(item.path, item.index)"
+            :class="[ item.index === currentIndex ? 'active': '' ]">
           {{ item.name }}
         </li>
       </ul>
@@ -23,25 +25,35 @@
 <script>
     import Icon from '../../../const/Icon'
     import DSearch from './DSearch.vue'
+    import { mapState } from 'vuex'
     export default {
       data () {
         return {
           logo: Icon.oslogo,
           items: [
-            { name: '视频课程' },
-            { name: '习题练习' },
-            { name: '作业发布' },
-            { name: '留言讨论' }
+            { name: '视频课程', index: 0, path: '/course' },
+            { name: '习题练习', index: 1, path: '/exercise' },
+            { name: '作业发布', index: 2, path: '/task' },
+            { name: '留言讨论', index: 3, path: '/message' }
           ]
         }
       },
       methods: {
         logoClick () {
-          this.$router.push('/')
+          this.router('/', -1)
+        },
+        router (path, index) {
+          this.$router.push(path)
+          this.$store.dispatch('updateCurrentIndex', index)
         }
       },
       components: {
         DSearch
+      },
+      computed: {
+        ...mapState(
+          ['currentIndex']
+        )
       }
     }
 </script>

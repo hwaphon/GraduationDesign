@@ -1,0 +1,32 @@
+@import "../theme";
+
+.dfooter {
+  height: 76px;
+  background-color: $base-footer-bgcolor;
+  padding: 0 $base-section-padding;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid rgba(0,0,0, .2);
+}
+
+.dfooter-nav {
+  list-style: none;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+}
+
+li {
+  margin-right: 24px;
+}
+
+a {
+  color: $base-footer-color;
+  text-decoration: none;
+}
+
+.copyright {
+  color: $base-footer-color;
+}

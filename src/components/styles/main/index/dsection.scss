@@ -1,0 +1,27 @@
+@import "../../theme";
+
+.gsection {
+  padding: $base-section-padding / 2 $base-section-padding;
+}
+
+header {
+  font-size: 18px;
+  color: #444444;
+  font-weight: bold;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.gsection-header {
+  margin: 0 12px;
+}
+
+i {
+  color: $base-color;
+}
+
+.gsection-content {
+  margin-top: 32px;
+}

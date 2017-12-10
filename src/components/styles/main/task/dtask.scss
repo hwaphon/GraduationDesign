@@ -1,0 +1,40 @@
+@import "../../theme";
+.dtask {
+  padding: $base-section-padding / 2 $base-section-padding;
+}
+
+.dtask-list {
+  width: 800px;
+  background-color: #FFFFFF;
+  padding: 0 16px;
+  margin: 0 auto;
+  border-radius: 8px;
+}
+
+.dtask-detail {
+  padding: 40px 16px 16px 16px;
+  position: relative;
+}
+
+.dtask-date, .dtask-author {
+  position: absolute;
+  top: 16px;
+  color: $base-footer-color;
+  font-size: 12px;
+}
+
+.dtask-date {
+  right: 16px;
+}
+
+.dtask-author {
+  left: 16px;
+}
+
+.pagination {
+  margin-top: $base-section-padding / 2;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+}

@@ -1,0 +1,54 @@
+@import "../../theme";
+
+.dcourse-detail {
+  padding: $base-section-padding / 2 $base-section-padding;
+}
+
+.dcourse-detail-content {
+  height: 480px;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  margin-top: $base-section-padding / 2;
+}
+
+.dcourse-detail-video {
+  flex: 1 1 auto;
+  height: 100%;
+  padding: $base-section-padding / 4 0px;
+}
+
+.dcourse-detail-info {
+  width: 360px;
+  height: 100%;
+  color: #444444;
+  padding: $base-section-padding / 4;
+  margin-left: $base-section-padding / 2;
+}
+
+.box {
+  font-weight: bold;
+  position: relative;
+  margin-bottom: 12px;
+  border-bottom: 1px solid $base-border-color;
+  padding-bottom: 12px;
+}
+.box:last-child {
+  border-bottom: none;
+}
+
+.author {
+  font-weight: normal;
+  position: absolute;
+  right: $base-section-padding / 4;
+  top: 0px;
+  color: $base-info-color;
+}
+
+.intro {
+  margin-top: 8px;
+  font-size: 14px;
+  color: $base-info-color;
+  text-indent: 2em;
+  font-weight: normal;
+}
