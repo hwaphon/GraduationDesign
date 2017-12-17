@@ -2,8 +2,8 @@
   <div class="index">
     <div class="block">
       <el-carousel trigger="click" height="380px">
-        <el-carousel-item v-for="(item, index) in items" :key="index">
-          <img :src="item.src" alt="carousel" class="carousel-img">
+        <el-carousel-item v-for="(item, index) in banners" :key="index">
+          <img :src="item.picUrl" alt="carousel" class="carousel-img">
         </el-carousel-item>
       </el-carousel>
     </div>
@@ -16,7 +16,7 @@
             <div style="padding: 14px;">
               <span class="title">{{ course.title }}</span>
               <div class="bottom clearfix">
-                <el-button type="text" class="button">查看详情</el-button>
+                <el-button type="text" class="button" @click="router(course.objectId)">查看详情</el-button>
               </div>
             </div>
           </el-card>
@@ -45,19 +45,23 @@
 
 <script>
     import Icon from '@/const/Icon'
+    import request from '@/network/network'
+    import API from '@/const/Api'
+    import Cache from '@/util/cache'
     import Helper from '@/util/helper'
     import { Course, Exercises } from '@/const/CourseData'
     import GSection from './index/DSection.vue'
+    const BANNERKEY = 'INDEXBANNER'
     export default {
       components: {
         GSection
       },
       data () {
         return {
-          items: Icon.swipers,
+          banners: [],
           currentSwiper: 0,
-          courses: Course,
-          exercises: Exercises
+          courses: [],
+          exercises: Exercises,
         }
       },
       methods: {
@@ -66,7 +70,40 @@
             return text
           }
           return Helper.split(text, length) + '...'
+        },
+        router (id) {
+          this.$router.push(`/course/detail/${id}`)
+        },
+        getCourse (key, url, ops) {
+          let _this = this
+          let isExist = Cache.exsit(key, ops.page, ops.limit)
+          if (isExist) {
+            this.courses = Cache.get(key, ops.page, ops.limit)
+          } else {
+            request(url, ops, function (result) {
+              let data = result.data
+              Cache.save(key, data)
+              _this.courses = data
+            })
+          }
+        },
+        getBanner () {
+          let _this = this
+          let result = window.sessionStorage.getItem(BANNERKEY)
+          if (result) {
+            this.banners = JSON.parse(result)
+          } else {
+            request(API.GETBANNER, {}, function (result) {
+              let data = result.data
+              _this.banners = data
+              window.sessionStorage.setItem(BANNERKEY, JSON.stringify(data))
+            })
+          }
         }
+      },
+      created () {
+        this.getCourse('INDEXCOURSE', API.GETCOURSE, { page: 0, limit: 8 })
+        this.getBanner()
       }
     }
 </script>

@@ -10,7 +10,7 @@
           <div style="padding: 14px;">
             <span class="title">{{ course.title }}</span>
             <div class="bottom clearfix">
-              <el-button type="text" class="button" @click="router(course.id)">查看详情</el-button>
+              <el-button type="text" class="button" @click="router(course.objectId)">查看详情</el-button>
             </div>
           </div>
         </el-card>
@@ -21,8 +21,8 @@
         @current-change="pageChange"
         background
         layout="prev, pager, next"
-        :page-size="12"
-        :total="10">
+        :page-size="limit"
+        :total="total">
       </el-pagination>
     </div>
   </div>
@@ -30,19 +30,49 @@
 
 <script>
     import { Course } from '@/const/CourseData'
+    import API from '@/const/Api'
+    import request from '@/network/network'
+    import Cache from '@/util/cache'
     export default {
       data () {
         return {
-          courses: Course
+          courses: [],
+          total: 0,
+          limit: 12,
+          key: 'COURSE'
         }
       },
       methods: {
         pageChange (index) {
-          console.log(index)
+          let realIndex = index - 1
+          this.getCourse(this.key, API.GETCOURSE, { page: realIndex, limit: this.limit })
         },
         router (id) {
           this.$router.push(`/course/detail/${id}`)
+        },
+        setCourse (result) {
+          this.courses = result.data
+        },
+        setLength (result) {
+          this.total = result.data.length
+        },
+        getCourse (key, url, ops) {
+          let _this = this
+          let isExist = Cache.exsit(key, ops.page, ops.limit)
+          if (isExist) {
+            this.courses = Cache.get(key, ops.page, ops.limit)
+          } else {
+            request(url, ops, function (result) {
+              let data = result.data
+              Cache.save(key, data)
+              _this.courses = data
+            })
+          }
         }
+      },
+      async created () {
+        await request(API.GETCOURSECOUNT, {}, this.setLength)
+        await this.getCourse(this.key, API.GETCOURSE, { limit: 12, page: 0 })
       }
     }
 </script>

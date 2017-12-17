@@ -10,6 +10,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "axios": "^0.17.1",
     "chimee": "^0.6.3",
     "chimee-player": "^1.1.5",
     "chimee-plugin-popup": "0.0.6",
@@ -18,6 +19,7 @@
     "install": "^0.10.2",
     "node-sass": "^4.6.1",
     "sass-loader": "^6.0.6",
+    "underscore": "^1.8.3",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
     "vuecomponent": "^1.0.1",

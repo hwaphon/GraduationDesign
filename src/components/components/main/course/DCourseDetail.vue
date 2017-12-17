@@ -25,23 +25,47 @@
 
 <script>
     import ChimeePlayer from 'chimee-player';
+    import request from '@/network/network'
+    import API from '@/const/Api'
     export default {
       data () {
         return {
-          title: 'Elastic Stack入门',
-          author: 'hwaphon',
-          intro: '操作系统（Operating System，简称OS）是管理和控制计算机硬件与软件资源的计算机程序.',
-          detail: '操作系统（Operating System，简称OS）是管理和控制计算机硬件与软件资源的计算机程序.',
-          src: 'http://cdn.toxicjohann.com/lostStar.mp4'
+          title: '',
+          author: '',
+          intro: '',
+          detail: '',
+          src: ''
         }
       },
       mounted () {
         const chimee = new ChimeePlayer({
           wrapper: '#video',
-          src: this.src,
           controls: true,
-          autoplay: false
+          autoplay: false,
+          autoload: false
         });
+
+        let _this = this
+        let id = this.$route.params.id
+        let result = request(API.GETCOURSEDETAIL, { id: id }, function (result) {
+          _this.setInfo(result)
+          if (_this.src) {
+            chimee.load(_this.src)
+          }
+        })
+
+      },
+      methods: {
+        setInfo (result) {
+          let data = result.data[0]
+          if (data) {
+            this.title = data.title
+            this.author = data.author
+            this.src = data.vurl
+            this.intro = data.intro
+            this.detail = data.des
+          }
+        }
       }
     }
 </script>
