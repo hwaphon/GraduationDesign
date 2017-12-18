@@ -29,7 +29,7 @@
         <el-col :span="6" v-for="(exercise, index) in exercises" :key="index" class="col-content">
           <el-card>
             <div slot="header" class="clearfix">
-              <span>{{ exercise.title }}</span>
+              <span class="dexercise-title">{{ exercise.title }}</span>
               <el-button style="float: right; padding: 3px 0" type="text">我要做题</el-button>
             </div>
             <div class="text item">
@@ -49,9 +49,10 @@
     import API from '@/const/Api'
     import Cache from '@/util/cache'
     import Helper from '@/util/helper'
-    import { Course, Exercises } from '@/const/CourseData'
     import GSection from './index/DSection.vue'
     const BANNERKEY = 'INDEXBANNER'
+    const EXERCISEKEY = 'INDEXEXERCISE'
+    const COURSEKEY = 'INDEXCOURSE'
     export default {
       components: {
         GSection
@@ -61,7 +62,7 @@
           banners: [],
           currentSwiper: 0,
           courses: [],
-          exercises: Exercises,
+          exercises: []
         }
       },
       methods: {
@@ -82,8 +83,21 @@
           } else {
             request(url, ops, function (result) {
               let data = result.data
-              Cache.save(key, data)
               _this.courses = data
+              Cache.save(key, data)
+            })
+          }
+        },
+        getExercises (key, url, ops) {
+          let _this = this
+          let isExist = Cache.exsit(key, ops.page, ops.limit)
+          if (isExist) {
+            this.exercises = Cache.get(key, ops.page, ops.limit)
+          } else {
+            request(url, ops, function (result) {
+              let data = result.data
+              _this.exercises = data
+              Cache.save(key, data)
             })
           }
         },
@@ -102,7 +116,8 @@
         }
       },
       created () {
-        this.getCourse('INDEXCOURSE', API.GETCOURSE, { page: 0, limit: 8 })
+        this.getCourse(COURSEKEY, API.GETCOURSE, { page: 0, limit: 8 })
+        this.getExercises(EXERCISEKEY, API.GETEXERCISE, { page: 0, limit: 12 })
         this.getBanner()
       }
     }

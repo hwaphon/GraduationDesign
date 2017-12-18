@@ -59,3 +59,11 @@ span.title {
 .text {
   height: 76px;
 }
+
+.dexercise-title {
+  display: inline-block;
+  width: 70%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
