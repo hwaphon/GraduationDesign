@@ -1,0 +1,65 @@
+.usercenter {
+  position: absolute;
+  min-height: 100%;
+  width: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.avatar {
+  border: 4px solid #409EFF;
+  width: 128px;
+  height: 128px;
+  border-radius: 100%;
+  transform: rotate(0deg);
+  transition: transform .4s;
+  cursor: pointer;
+}
+
+.avatar:hover {
+  box-shadow: 0 0 8px 2px rgba(0, 0, 0, .4);
+  position: relative;
+  z-index: 100;
+  transform: rotate(369deg);
+  transition: all .4s;
+}
+
+.nickname {
+  margin-top: 32px;
+}
+
+.email {
+  margin-top: 4px;
+}
+
+.nickname, .email {
+  display: block;
+  color: #444444;
+}
+
+.date {
+  display: block;
+  margin-top: 24px;
+  color: #909399;
+}
+
+.basic-info, .msg-info {
+  min-height: 100%;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+}
+
+.basic-info {
+  width: 300px;
+  border-right: 1px solid rgba(0, 0, 0, 0.2);
+  padding: 24px 0px;
+}
+
+.msg-info {
+  padding: 24px;
+}
+
+.tooltips {
+  color: #606266;
+}

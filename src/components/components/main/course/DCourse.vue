@@ -31,7 +31,7 @@
 <script>
     import { Course } from '@/const/CourseData'
     import API from '@/const/Api'
-    import request from '@/network/network'
+    import { request } from '@/network/network'
     import Cache from '@/util/cache'
     export default {
       data () {

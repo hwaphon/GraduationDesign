@@ -5,7 +5,7 @@
         <el-card>
           <div slot="header" class="clearfix">
             <span class="dexercise-title">{{ exercise.title }}</span>
-            <el-button style="float: right; padding: 3px 0" type="text">我要做题</el-button>
+            <el-button style="float: right; padding: 3px 0" type="text" @click="doExercise(exercise.objectId)">我要做题</el-button>
           </div>
           <div class="text item">
             {{ splitText(exercise.des, 60) }}
@@ -30,7 +30,7 @@
     import Helper from '@/util/helper'
     import API from '@/const/Api'
     import Cache from '@/util/cache'
-    import request from '@/network/network'
+    import { request } from '@/network/network'
     const KEY = 'EXERCISE'
     export default {
       data () {
@@ -41,6 +41,9 @@
         }
       },
       methods: {
+        doExercise (id) {
+          this.$router.push(`/exercise/detail/${ id }`)
+        },
         splitText (text, length) {
           if (text.length <= length) {
             return text

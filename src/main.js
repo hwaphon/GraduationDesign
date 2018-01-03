@@ -8,9 +8,11 @@ import 'element-ui/lib/theme-chalk/index.css'
 import 'font-awesome/css/font-awesome.css'
 import store from './store'
 import axios from 'axios';
+import $ from 'jquery'
 
 Vue.use(ElementUI)
 Vue.config.productionTip = false
+axios.defaults.withCredentials = true
 Vue.prototype.http = axios;
 /* eslint-disable no-new */
 new Vue({

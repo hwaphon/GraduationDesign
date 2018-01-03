@@ -4,7 +4,9 @@ import Index from '@/components/components/main/Index'
 import DCourse from '@/components/components/main/course/DCourse'
 import DCourseDetail from '@/components/components/main/course/DCourseDetail'
 import DExercise from '@/components/components/main/exercise/DExercise'
+import DExerciseDetail from '@/components/components/main/exercise/DExerciseDetail'
 import DTask from '@/components/components/main/task/DTask'
+import DUserCenter from '@/components/components/user/UserCenter'
 
 Vue.use(Router)
 
@@ -31,9 +33,19 @@ export default new Router({
       component: DExercise
     },
     {
+      name: 'ExerciseDetail',
+      path: '/exercise/detail/:id',
+      component: DExerciseDetail
+    },
+    {
       name: 'Task',
       path: '/task',
       component: DTask
+    },
+    {
+      name: 'UserCenter',
+      path: '/usercenter',
+      component: DUserCenter
     }
   ]
 })

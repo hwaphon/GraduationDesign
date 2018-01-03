@@ -28,6 +28,7 @@
     min-width: 1210px;
   }
   .main-content {
-    flex: 1 1 auto;
+    flex: 1 1 0px;
+    position: relative;
   }
 </style>

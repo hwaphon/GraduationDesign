@@ -20,12 +20,16 @@
         </el-card>
       </div>
     </div>
+    <div class="dcourse-comments">
+      <DComments></DComments>
+    </div>
   </div>
 </template>
 
 <script>
     import ChimeePlayer from 'chimee-player';
-    import request from '@/network/network'
+    import DComments from '../../global/DComments.vue'
+    import { request, post } from '@/network/network'
     import API from '@/const/Api'
     export default {
       data () {
@@ -49,6 +53,7 @@
         let id = this.$route.params.id
         let result = request(API.GETCOURSEDETAIL, { id: id }, function (result) {
           _this.setInfo(result)
+          _this.record()
           if (_this.src) {
             chimee.load(_this.src)
           }
@@ -65,7 +70,19 @@
             this.intro = data.intro
             this.detail = data.des
           }
+        },
+        record () {
+          let date = new Date()
+          let content = `您于${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}访问过 《${this.title}》`
+          post(API.RECORD, { url: window.location.href, content: content }, function (res) {
+            if (res.status === 200 && res.data.status === 'success') {
+              // 如果失败怎么办
+            }
+          })
         }
+      },
+      components: {
+        DComments
       }
     }
 </script>

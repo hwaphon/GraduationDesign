@@ -45,7 +45,7 @@
 
 <script>
     import Icon from '@/const/Icon'
-    import request from '@/network/network'
+    import { request } from '@/network/network'
     import API from '@/const/Api'
     import Cache from '@/util/cache'
     import Helper from '@/util/helper'

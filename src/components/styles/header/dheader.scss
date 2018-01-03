@@ -54,11 +54,31 @@ li:hover, li.active {
   transition: color .2s;
 }
 
-.dheader-enter {
+.dheader-enter, .dheader-userinfo {
   color: #444444;
   position: absolute;
   right: 36px;
   cursor: pointer;
+}
+
+.dheader-userinfo {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.dheader-userinfo img {
+  width: 32px;
+  height: 32px;
+  border-radius: 100%;
+  margin-right: 8px;
+  border: 1px solid #909399;
+}
+
+.dheader-userinfo img:hover {
+  border-color: #409EFF;
+  transition: all .2s;
 }
 
 .dheader-enter > span:not(:last-of-type)::after {
@@ -71,4 +91,6 @@ li:hover, li.active {
   color: $base-color;
   transition: color .2s;
 }
+
+
 

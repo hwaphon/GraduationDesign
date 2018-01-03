@@ -24,4 +24,11 @@ function request (url, ops, callback) {
   })
 }
 
-export default request
+function post (url, ops, callback) {
+  axios.post(url, ops).then(function (res) {
+    callback(res)
+  }, function (err) {
+    throw new Error(err)
+  })
+}
+export { request, post }
