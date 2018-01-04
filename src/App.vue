@@ -29,6 +29,5 @@
   }
   .main-content {
     flex: 1 1 0px;
-    position: relative;
   }
 </style>

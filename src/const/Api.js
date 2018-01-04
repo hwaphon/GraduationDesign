@@ -9,7 +9,8 @@ const API = {
   'GETEXERCISEDETAIL': 'http://mygraduation.leanapp.cn/exercise/detail/',
   'CURRENT': 'http://127.0.0.1:3000/user/current/',
   'USERINFO': 'http://127.0.0.1:3000/user/info/',
-  'RECORD': 'http://127.0.0.1:3000/user/record/'
+  'RECORD': 'http://127.0.0.1:3000/user/record/',
+  'HISTORY': 'http://127.0.0.1:3000/user/history/'
 }
 
 export default API

@@ -8,6 +8,9 @@
     </div>
     <div class="msg-info">
       <span class="tooltips">我的动态</span>
+      <div class="msg" v-for="msg in messages">
+        <a :href="msg.url">{{ msg.content }}</a>
+      </div>
     </div>
   </div>
 </template>
@@ -21,7 +24,8 @@
           avatar: '',
           username: '',
           email: '',
-          date: ''
+          date: '',
+          messages: []
         }
       },
       computed: {
@@ -39,6 +43,12 @@
             _this.username = result.data.username
             _this.email = result.data.email
             _this.date = result.data.createdAt
+          }
+        })
+
+        request(API.HISTORY, {}, function (result) {
+          if (result.status === 200) {
+            _this.messages = result.data
           }
         })
       }

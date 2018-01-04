@@ -1,6 +1,5 @@
 .usercenter {
-  position: absolute;
-  min-height: 100%;
+  height: 100%;
   width: 100%;
   display: flex;
   flex-flow: row nowrap;
@@ -51,15 +50,46 @@
 }
 
 .basic-info {
-  width: 300px;
-  border-right: 1px solid rgba(0, 0, 0, 0.2);
-  padding: 24px 0px;
+  width: 20%;
+  padding: 24px;
+  background-color: #FFFFFF;
+  margin: 48px 24px;
+  border-radius: 6px;
+  box-shadow: 0 0 12px 0px rgba(0, 0, 0, .2);
 }
 
 .msg-info {
   padding: 24px;
+  width: 80%;
+  display: flex;
+  flex-flow: column;
+  color: #606266;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 
 .tooltips {
   color: #606266;
+}
+
+.msg {
+  margin: 24px;
+  width: 100%;
+}
+
+.msg a {
+  background-color: #FFFFFF;
+  height: 48px;
+  line-height: 48px;
+  width: 80%;
+  display: block;
+  padding: 0px 16px;
+  color: #606266;
+  box-shadow: 0 0 12px 0px rgba(0, 0, 0, .2);
+  text-decoration: none;
+}
+
+.msg a:hover {
+  color: #409EFF;
+  transition: color .2s;
 }
