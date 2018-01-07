@@ -14,7 +14,9 @@ const API = {
   'COMMENTS': 'http://127.0.0.1:3000/comments/',
   'MESSAGES': 'http://127.0.0.1:3000/messages/',
   'MESSAGESDETAIL': 'http://127.0.0.1:3000/messages/detail/',
-  'MESSAGESCOUNT': 'http://127.0.0.1:3000/messages/count/'
+  'MESSAGESCOUNT': 'http://127.0.0.1:3000/messages/count/',
+  'TASK': 'http://127.0.0.1:3000/task/',
+  'TASKCOUNT': 'http://127.0.0.1:3000/task/count/'
 }
 
 export default API

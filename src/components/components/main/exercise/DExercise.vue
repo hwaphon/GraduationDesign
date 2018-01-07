@@ -13,7 +13,7 @@
         </el-card>
       </el-col>
     </el-row>
-    <div class="pagination">
+    <div class="pagination" v-if="total / limit >= 1">
       <el-pagination
         @current-change="pageChange"
         background
