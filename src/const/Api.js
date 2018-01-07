@@ -6,11 +6,15 @@ const API = {
   'GETEXERCISE': 'http://mygraduation.leanapp.cn/exercise/',
   'GETEXERCISECOUNT': 'http://mygraduation.leanapp.cn/exercise/count/',
   'LOGIN': 'http://127.0.0.1:3000/user/login/',
-  'GETEXERCISEDETAIL': 'http://mygraduation.leanapp.cn/exercise/detail/',
+  'GETEXERCISEDETAIL': 'http://127.0.0.1:3000/exercise/detail/',
   'CURRENT': 'http://127.0.0.1:3000/user/current/',
   'USERINFO': 'http://127.0.0.1:3000/user/info/',
   'RECORD': 'http://127.0.0.1:3000/user/record/',
-  'HISTORY': 'http://127.0.0.1:3000/user/history/'
+  'HISTORY': 'http://127.0.0.1:3000/user/history/',
+  'COMMENTS': 'http://127.0.0.1:3000/comments/',
+  'MESSAGES': 'http://127.0.0.1:3000/messages/',
+  'MESSAGESDETAIL': 'http://127.0.0.1:3000/messages/detail/',
+  'MESSAGESCOUNT': 'http://127.0.0.1:3000/messages/count/'
 }
 
 export default API

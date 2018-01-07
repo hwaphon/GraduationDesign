@@ -41,11 +41,12 @@
 
 <script>
     import { request } from '@/network/network'
+    import Record from '@/util/record'
     import API from '@/const/Api'
     export default {
       data () {
         return {
-          title: '',
+          title: this.$route.query.title,
           answers: [],
           subjects: [],
           showDes: false,
@@ -70,11 +71,16 @@
               errors += 1
             }
           });
+          let url = window.location.href
+          let content = `练习了 《${ this.title }》,`
           if (errors === 0) {
             this.tooltipMsg = '恭喜你答对了所有题目'
+            content += '并且做对了所有的题目，真的很赞！'
           } else {
             this.tooltipMsg = `你一共答错了 ${errors} 道题目，赶紧去看看答案解析吧`
+            content += `其中做错了 ${ errors } 道题目，要时常复习呀。`
           }
+          Record.save({ url, content })
           this.dialogVisible = true
           this.showCheck = true
         },
@@ -85,6 +91,7 @@
       created () {
         let _this = this
         request(API.GETEXERCISEDETAIL, { id: _this.$route.params.id }, function (results) {
+          console.log(results)
           _this.subjects = results.data
         })
       }

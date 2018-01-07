@@ -1,0 +1,61 @@
+.dmessage-detail {
+  width: 80%;
+  margin: 20px auto;
+  background-color: #FFFFFF;
+  border: 1px solid #dcdcdc;
+  min-height: 480px;
+}
+
+.dmessage-detail-header {
+  text-align: center;
+  height: 52px;
+  line-height: 52px;
+  color: #409EFF;
+  border-bottom: 1px dashed #dcdcdc;
+}
+.nav {
+  float: left;
+  margin-left: 20px;
+  cursor: pointer;
+}
+
+.header {
+  color: #303133;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.dmessage-detail-content {
+  color: #606266;
+  width: 75%;
+  margin: 24px auto;
+  padding: 20px;
+}
+
+.user {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.user img {
+  width: 24px;
+  height: 24px;
+  border-radius: 100%;
+}
+
+.user .name {
+  margin-left: 6px;
+  font-size: 12px;
+}
+
+.des {
+  margin-top: 16px;
+}
+
+.comments {
+  width: 75%;
+  padding: 20px;
+  margin: 0 auto;
+}

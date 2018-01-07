@@ -13,7 +13,6 @@
           {{ item.name }}
         </li>
       </ul>
-      <DSearch></DSearch>
       <div class="dheader-enter" v-if="!logined">
         <span @click="login">登录</span>
         <span @click="register">注册</span>
@@ -29,7 +28,6 @@
 
 <script>
     import Icon from '../../../const/Icon'
-    import DSearch from './DSearch.vue'
     import DLogin from '../global/DLoginAndRegister.vue'
     import { request } from '@/network/network'
     import API from '@/const/Api'
@@ -70,7 +68,6 @@
         },
         loginSuccess (data) {
           this.logined = true
-          console.log(data)
           this.userName = data.username
           this.userAvatar = data.avatar
         },
@@ -79,7 +76,6 @@
         }
       },
       components: {
-        DSearch,
         DLogin
       },
       computed: {

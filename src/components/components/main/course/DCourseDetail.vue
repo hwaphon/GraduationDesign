@@ -21,7 +21,7 @@
       </div>
     </div>
     <div class="dcourse-comments">
-      <DComments></DComments>
+      <DComments :id="id" :title="title"></DComments>
     </div>
   </div>
 </template>
@@ -30,6 +30,7 @@
     import ChimeePlayer from 'chimee-player';
     import DComments from '../../global/DComments.vue'
     import { request, post } from '@/network/network'
+    import Record from '@/util/record'
     import API from '@/const/Api'
     export default {
       data () {
@@ -38,7 +39,8 @@
           author: '',
           intro: '',
           detail: '',
-          src: ''
+          src: '',
+          id: this.$route.params.id
         }
       },
       mounted () {
@@ -50,8 +52,7 @@
         });
 
         let _this = this
-        let id = this.$route.params.id
-        let result = request(API.GETCOURSEDETAIL, { id: id }, function (result) {
+        let result = request(API.GETCOURSEDETAIL, { id: this.id }, function (result) {
           _this.setInfo(result)
           _this.record()
           if (_this.src) {
@@ -72,13 +73,9 @@
           }
         },
         record () {
-          let date = new Date()
-          let content = `您于${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}访问过 《${this.title}》`
-          post(API.RECORD, { url: window.location.href, content: content }, function (res) {
-            if (res.status === 200 && res.data.status === 'success') {
-              // 如果失败怎么办
-            }
-          })
+          let content = `学习了课程 《${this.title}》`
+          let url = window.location.href
+          Record.save({ url, content })
         }
       },
       components: {

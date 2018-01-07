@@ -51,6 +51,7 @@
 
 .basic-info {
   width: 20%;
+  max-height: 360px;
   padding: 24px;
   background-color: #FFFFFF;
   margin: 48px 24px;
@@ -70,26 +71,34 @@
 
 .tooltips {
   color: #606266;
+  margin-bottom: 16px;
 }
 
 .msg {
-  margin: 24px;
   width: 100%;
 }
 
 .msg a {
+  position: relative;
   background-color: #FFFFFF;
-  height: 48px;
-  line-height: 48px;
   width: 80%;
+  line-height: 1.5;
   display: block;
-  padding: 0px 16px;
+  padding: 16px 72px 16px 16px;
+  border-bottom: 1px solid #eee;
   color: #606266;
-  box-shadow: 0 0 12px 0px rgba(0, 0, 0, .2);
   text-decoration: none;
 }
 
 .msg a:hover {
   color: #409EFF;
   transition: color .2s;
+}
+
+.msg span {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  font-size: 12px;
+  color: #C0C4CC;
 }

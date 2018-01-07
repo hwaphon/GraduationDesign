@@ -1,0 +1,98 @@
+@import "../../theme";
+
+.dmessages-container {
+  padding: $base-section-padding / 2 $base-section-padding;
+}
+
+.custom-container {
+  min-height: 732px;
+  position: relative;
+  padding-top: $base-section-padding;
+}
+
+.pagination {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.col-content {
+  height: 220px;
+  margin-bottom: 24px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.message {
+  height: 100%;
+  border-radius: 6px;
+  padding: 24px;
+  color: #606266;
+  font-size: 14px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 12px 0px;
+  background-color: #FFFFFF;
+  text-align: center;
+}
+
+.message p {
+  margin-top: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: bold;
+}
+
+.message img {
+  width: 126px;
+  height: 126px;
+  border-radius: 100%;
+  transform: rotate(0deg);
+  transition: transform .4s;
+}
+
+.message img:hover {
+  transform: rotate(360deg);
+  transition: transform .4s;
+}
+
+.message .fa {
+  height: 96px;
+  width: 96px;
+  text-align: center;
+  background-color: #606266;
+  border-radius: 100%;
+  display: inline-block;
+  font-size: 96px;
+  z-index: 0;
+  transform: rotate(0deg);
+  transition: transform .4s;
+}
+
+.message .fa:hover {
+  transform: rotate(360deg);
+  transition: transform .4s;
+}
+
+i.add-message {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  width: 48px;
+  height: 48px;
+  border-radius: 100%;
+  background-color: #409EFF;
+  line-height: 48px;
+  text-align: center;
+  color: #FFFFFF;
+  cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 12px 0px;
+}
+
+i.add-message:hover {
+  transform: scale(1.1);
+  transition: transform .2s;
+}
+
+
+

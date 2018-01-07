@@ -42,3 +42,81 @@ button {
   color: #888888;
   margin-bottom: 12px;
 }
+
+.dcomments-container {
+  display: flex;
+  flex-flow: column;
+  margin: 36px 0px;
+}
+
+.dcomment {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.dcomment-user {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  margin-right: 18px;
+}
+
+.dcomment-user .basic {
+  display: flex;
+  flex-flow: column;
+  margin-right: 8px;
+}
+
+.dcomment-user span {
+  text-align: right;
+}
+
+.dcomment-user .username {
+  font-size: 14px;
+  font-weight: bold;
+  color: #444444;
+}
+
+.dcomment-user .time {
+  font-size: 10px;
+  color: #C0C4CC;
+}
+
+.dcomment-user img {
+  width: 48px;
+  height: 48px;
+  border-radius: 100%;
+  object-fit: cover;
+  object-position: center;
+  transform: rotate(0deg);
+  transition: transform .3s;
+}
+
+.dcomment-user img:hover {
+  transform: rotate(360deg);
+  transition: transform .3s;
+}
+
+.dcomment-content {
+  flex: 1 1 0px;
+  background-color: #E4E7ED;
+  padding: 16px;
+  font-size: 14px;
+  color: #444444;
+  position: relative;
+  border-radius: 4px;
+}
+
+.dcomment-content::before {
+  content: "";
+  position: absolute;
+  top: 16px;
+  width: 12px;
+  height: 12px;
+  background-color: #FFFFFF;
+  border-radius: 100%;
+  left: -6px;
+  border: 2px solid #E4E7ED;
+}

@@ -33,6 +33,7 @@
     import API from '@/const/Api'
     import { request } from '@/network/network'
     import Cache from '@/util/cache'
+    const COUNT = 'COURSECOUNT'
     export default {
       data () {
         return {
@@ -53,9 +54,6 @@
         setCourse (result) {
           this.courses = result.data
         },
-        setLength (result) {
-          this.total = result.data.length
-        },
         getCourse (key, url, ops) {
           let _this = this
           let isExist = Cache.exsit(key, ops.page, ops.limit)
@@ -71,8 +69,19 @@
         }
       },
       async created () {
-        await request(API.GETCOURSECOUNT, {}, this.setLength)
         await this.getCourse(this.key, API.GETCOURSE, { limit: 12, page: 0 })
+        let _this = this
+        let count = JSON.parse(sessionStorage.getItem(COUNT))
+        if (count === null) {
+          request(API.GETCOURSECOUNT, {}, function (res) {
+            if (res.status === 200) {
+              _this.total = res.data.length
+              sessionStorage.setItem(COUNT, JSON.stringify(_this.total))
+            }
+          })
+        } else {
+          _this.total = count
+        }
       }
     }
 </script>
