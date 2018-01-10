@@ -9,6 +9,8 @@
 </template>
 
 <script>
+  import Request from '@/network/networkHelper'
+  import API from '@/const/dataApi'
   import DHeader from './components/components/header/DHeader.vue'
   import DFooter from './components/components/footer/DFooter.vue'
   export default {

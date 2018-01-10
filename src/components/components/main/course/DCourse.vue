@@ -30,8 +30,8 @@
 
 <script>
     import { Course } from '@/const/CourseData'
-    import API from '@/const/Api'
-    import { request } from '@/network/network'
+    import API from '@/const/dataApi'
+    import Request from '@/network/networkHelper'
     import Cache from '@/util/cache'
     const COUNT = 'COURSECOUNT'
     export default {
@@ -46,7 +46,7 @@
       methods: {
         pageChange (index) {
           let realIndex = index - 1
-          this.getCourse(this.key, API.GETCOURSE, { page: realIndex, limit: this.limit })
+          this.getCourse(this.key, API.COURSE, { skip: realIndex * this.limit, limit: this.limit })
         },
         router (id) {
           this.$router.push(`/course/detail/${id}`)
@@ -56,32 +56,27 @@
         },
         getCourse (key, url, ops) {
           let _this = this
-          let isExist = Cache.exsit(key, ops.page, ops.limit)
+          let page = Math.floor(ops.skip / ops.limit)
+          let isExist = Cache.exsit(key, page, ops.limit)
           if (isExist) {
-            this.courses = Cache.get(key, ops.page, ops.limit)
+            this.courses = Cache.get(key, page, ops.limit)
           } else {
-            request(url, ops, function (result) {
-              let data = result.data
+            Request.get(url, ops).then(function (result) {
+              let data = result.data.results
               Cache.save(key, data)
               _this.courses = data
+
+              let count = JSON.parse(sessionStorage.getItem(COUNT))
+              if (count === null && result.data.count) {
+                _this.total = result.data.count
+                sessionStorage.setItem(COUNT, JSON.stringify(_this.total))
+              }
             })
           }
         }
       },
-      async created () {
-        await this.getCourse(this.key, API.GETCOURSE, { limit: 12, page: 0 })
-        let _this = this
-        let count = JSON.parse(sessionStorage.getItem(COUNT))
-        if (count === null) {
-          request(API.GETCOURSECOUNT, {}, function (res) {
-            if (res.status === 200) {
-              _this.total = res.data.length
-              sessionStorage.setItem(COUNT, JSON.stringify(_this.total))
-            }
-          })
-        } else {
-          _this.total = count
-        }
+      created () {
+        this.getCourse(this.key, API.COURSE, { limit: 12, skip: 0, count: 1 })
       }
     }
 </script>

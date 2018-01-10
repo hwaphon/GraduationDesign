@@ -12,7 +12,6 @@ import $ from 'jquery'
 
 Vue.use(ElementUI)
 Vue.config.productionTip = false
-axios.defaults.withCredentials = true
 Vue.prototype.http = axios;
 /* eslint-disable no-new */
 new Vue({

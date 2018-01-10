@@ -26,16 +26,15 @@
 </template>
 
 <script>
-    import { Exercises } from '@/const/CourseData'
     import Helper from '@/util/helper'
-    import API from '@/const/Api'
+    import API from '@/const/dataApi'
     import Cache from '@/util/cache'
-    import { request } from '@/network/network'
+    import Request from '@/network/networkHelper'
     const KEY = 'EXERCISE'
     export default {
       data () {
         return {
-          exercises: Exercises,
+          exercises: [],
           total: 0,
           limit: 16
         }
@@ -52,28 +51,31 @@
         },
         pageChange (index) {
           let realIndex = index - 1
-          this.getExercises(KEY, API.GETEXERCISE, { page: realIndex, limit: this.limit })
-        },
-        setLength (result) {
-          this.total = result.data.length
+          this.getExercises(KEY, API.EXERCISE, { skip: realIndex * this.limit, limit: this.limit })
         },
         getExercises (key, url, ops) {
           let _this = this
-          let isExist = Cache.exsit(key, ops.page, ops.limit)
+          let page = Math.floor(ops.skip / ops.limit)
+          let isExist = Cache.exsit(key, page, ops.limit)
           if (isExist) {
-            this.exercises = Cache.get(key, ops.page, ops.limit)
+            this.exercises = Cache.get(key, page, ops.limit)
           } else {
-            request(url, ops, function (result) {
-              let data = result.data
-              _this.exercises = data
+            Request.get(url, ops).then(function (result) {
+              let data = result.data.results
               Cache.save(key, data)
+              _this.exercises = data
+
+              let count = JSON.parse(sessionStorage.getItem(COUNT))
+              if (count === null && result.data.count) {
+                _this.total = result.data.count
+                sessionStorage.setItem(COUNT, JSON.stringify(_this.total))
+              }
             })
           }
-        },
+        }
       },
       created () {
-        this.getExercises(KEY, API.GETEXERCISE, { limit: this.limit, page: 0 })
-        request(API.GETEXERCISECOUNT, {}, this.setLength)
+        this.getExercises(KEY, API.EXERCISE, { limit: this.limit, skip: 0, count: 1 })
       }
     }
 </script>

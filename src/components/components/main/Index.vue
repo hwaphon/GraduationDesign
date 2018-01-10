@@ -45,8 +45,8 @@
 
 <script>
     import Icon from '@/const/Icon'
-    import { request } from '@/network/network'
-    import API from '@/const/Api'
+    import Request from '@/network/networkHelper'
+    import API from '@/const/dataApi'
     import Cache from '@/util/cache'
     import Helper from '@/util/helper'
     import GSection from './index/DSection.vue'
@@ -77,25 +77,27 @@
         },
         getCourse (key, url, ops) {
           let _this = this
-          let isExist = Cache.exsit(key, ops.page, ops.limit)
+          let page = Math.floor(ops.skip / ops.limit)
+          let isExist = Cache.exsit(key, page, ops.limit)
           if (isExist) {
-            this.courses = Cache.get(key, ops.page, ops.limit)
+            this.courses = Cache.get(key, page, ops.limit)
           } else {
-            request(url, ops, function (result) {
-              let data = result.data
-              _this.courses = data
+            Request.get(url, ops).then(function (result) {
+              let data = result.data.results
               Cache.save(key, data)
+              _this.courses = data
             })
           }
         },
         getExercises (key, url, ops) {
           let _this = this
-          let isExist = Cache.exsit(key, ops.page, ops.limit)
+          let page = Math.floor(ops.skip / ops.limit)
+          let isExist = Cache.exsit(key, page, ops.limit)
           if (isExist) {
-            this.exercises = Cache.get(key, ops.page, ops.limit)
+            this.exercises = Cache.get(key, page, ops.limit)
           } else {
-            request(url, ops, function (result) {
-              let data = result.data
+            Request.get(url, ops).then(function (result) {
+              let data = result.data.results
               _this.exercises = data
               Cache.save(key, data)
             })
@@ -107,8 +109,8 @@
           if (result) {
             this.banners = JSON.parse(result)
           } else {
-            request(API.GETBANNER, {}, function (result) {
-              let data = result.data
+            Request.get(API.BANNER, {}).then(function (result) {
+              let data = result.data.results
               _this.banners = data
               window.sessionStorage.setItem(BANNERKEY, JSON.stringify(data))
             })
@@ -116,8 +118,8 @@
         }
       },
       created () {
-        this.getCourse(COURSEKEY, API.GETCOURSE, { page: 0, limit: 8 })
-        this.getExercises(EXERCISEKEY, API.GETEXERCISE, { page: 0, limit: 12 })
+        this.getCourse(COURSEKEY, API.COURSE, { skip: 0, limit: 8 })
+        this.getExercises(EXERCISEKEY, API.EXERCISE, { skip: 0, limit: 12 })
         this.getBanner()
       }
     }
