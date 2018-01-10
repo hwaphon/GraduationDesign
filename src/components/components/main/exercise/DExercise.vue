@@ -31,6 +31,7 @@
     import Cache from '@/util/cache'
     import Request from '@/network/networkHelper'
     const KEY = 'EXERCISE'
+    const COUNT = 'EXERCISECOUNT'
     export default {
       data () {
         return {
@@ -59,6 +60,7 @@
           let isExist = Cache.exsit(key, page, ops.limit)
           if (isExist) {
             this.exercises = Cache.get(key, page, ops.limit)
+            this.total = JSON.parse(sessionStorage.getItem(COUNT))
           } else {
             Request.get(url, ops).then(function (result) {
               let data = result.data.results

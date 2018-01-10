@@ -44,14 +44,13 @@
       created () {
         let _this = this
         this.$store.dispatch('updateCurrentIndex', -1)
-        request(API.USERINFO, {}, function (result) {
-          if (result.status === 200) {
-            _this.avatar = result.data.avatar
-            _this.username = result.data.username
-            _this.email = result.data.email
-            _this.date = result.data.createdAt
-          }
-        })
+        let userinfo = JSON.parse(sessionStorage.getItem('USERINFO'))
+        if (userinfo) {
+          this.avatar = userinfo.avatar
+          this.username = userinfo.username
+          this.email = userinfo.email
+          this.date = userinfo.createdAt
+        }
         Record.get().then(function (data) {
           _this.messages = data
         })

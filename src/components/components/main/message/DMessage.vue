@@ -38,7 +38,8 @@
 <script>
     import ElInput from "../../../../../node_modules/element-ui/packages/input/src/input.vue";
     import { request, post } from '@/network/network'
-    import API from '@/const/Api'
+    import Request from '@/network/networkHelper'
+    import API from '@/const/dataApi'
     import Cache from '@/util/cache'
     import Record from '@/util/record'
     const KEY = 'MESSAGES'
@@ -58,7 +59,7 @@
       methods: {
         pageChange (index) {
           let realIndex = index - 1
-          this.getMessages(KEY, API.MESSAGES, { page: realIndex, limit: 12 })
+          this.getMessages(KEY, API.MESSAGES, { skip: realIndex * this.limit, limit: this.limit })
         },
         routerMessage (id, topic) {
             this.$router.push({ path: `/message/detail/${ id }`, query: { topic: topic }})
@@ -68,14 +69,22 @@
         },
         getMessages (key, url, ops) {
           let _this = this
-          let isExist = Cache.exsit(key, ops.page, ops.limit)
+          let page = Math.floor(ops.skip / ops.limit)
+          let isExist = Cache.exsit(key, page, ops.limit)
           if (isExist) {
-            this.messages = Cache.get(key, ops.page, ops.limit)
+            this.messages = Cache.get(key, page, ops.limit)
+            this.total = JSON.parse(sessionStorage.getItem(COUNT))
           } else {
-            request(url, ops, function (result) {
-              let data = result.data
-              _this.messages = data
+            Request.get(url, ops).then(function (result) {
+              let data = result.data.results
               Cache.save(key, data)
+              _this.messages = data
+
+              let count = JSON.parse(sessionStorage.getItem(COUNT))
+              if (count === null && result.data.count) {
+                _this.total = result.data.count
+                sessionStorage.setItem(COUNT, JSON.stringify(_this.total))
+              }
             })
           }
         },
@@ -128,19 +137,7 @@
         }
       },
       created () {
-        let _this = this
-        this.getMessages(KEY, API.MESSAGES, { page: 0, limit: 12 })
-        let count = JSON.parse(sessionStorage.getItem(COUNT))
-        if (count === null) {
-          request(API.MESSAGESCOUNT, {}, function (result) {
-            if (result.status === 200) {
-              _this.total = result.data.length
-              sessionStorage.setItem(COUNT, JSON.stringify(_this.total))
-            }
-          })
-        } else {
-          _this.total = count
-        }
+        this.getMessages(KEY, API.MESSAGES, { skip: 0, limit: 12, count: 1 })
       }
     }
 </script>

@@ -24,9 +24,9 @@
 </template>
 
 <script>
-    import { request } from '@/network/network'
+    import Request from '@/network/networkHelper'
     import Cache from '@/util/cache'
-    import API from '@/const/Api'
+    import API from '@/const/dataApi'
     const KEY = 'TASK'
     const COUNT = 'TASKCOUNT'
     export default {
@@ -41,36 +41,32 @@
       methods: {
         pageChange (index) {
           let realIndex = index - 1
-          this.getTasks(KEY, API.TASK, { page: realIndex, limit: this.limit })
+          this.getTasks(KEY, API.TASK, { skip: realIndex * this.limit, limit: this.limit })
         },
         getTasks (key, url, ops) {
           let _this = this
-          let isExist = Cache.exsit(key, ops.page, ops.limit)
+          let page = Math.floor(ops.skip / ops.limit)
+          let isExist = Cache.exsit(key, page, ops.limit)
           if (isExist) {
-            this.tasks = Cache.get(key, ops.page, ops.limit)
+            this.tasks = Cache.get(key, page, ops.limit)
+            this.total = JSON.parse(sessionStorage.getItem(COUNT))
           } else {
-            request(url, ops, function (result) {
-              let data = result.data
-              _this.tasks = data
+            Request.get(url, ops).then(function (result) {
+              let data = result.data.results
               Cache.save(key, data)
+              _this.tasks = data
+
+              let count = JSON.parse(sessionStorage.getItem(COUNT))
+              if (count === null && result.data.count) {
+                _this.total = result.data.count
+                sessionStorage.setItem(COUNT, JSON.stringify(_this.total))
+              }
             })
           }
         }
       },
       created () {
-        let _this = this
-        let count = JSON.parse(sessionStorage.getItem(COUNT))
-        if (count === null) {
-          request(API.TASKCOUNT, {}, function (res) {
-            if (res.status === 200) {
-              _this.total = res.data.length
-              sessionStorage.setItem(COUNT, JSON.stringify(_this.total))
-            }
-          })
-        } else {
-          _this.total = count
-        }
-        this.getTasks(KEY, API.TASK, { page: 0, limit: this.limit })
+        this.getTasks(KEY, API.TASK, { skip: 0, limit: this.limit, count: 1 })
       }
     }
 </script>

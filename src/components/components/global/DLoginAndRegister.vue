@@ -32,8 +32,8 @@
 </template>
 
 <script>
-  import API from '@/const/Api'
-  import { request } from '@/network/network'
+  import API from '@/const/dataApi'
+  import Request from '@/network/networkHelper'
   import Event from '@/const/Event'
   export default {
     props: {
@@ -87,11 +87,27 @@
         var _this = this
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            request(API.LOGIN, { username: this.form.username, password: this.form.pass }, function (result) {
-              if (result.status === 200) {
-                _this.closeDialog()
-                _this.$emit(Event.LoginSuccess, result.data)
-              }
+            Request.login(API.LOGIN,
+              { username: this.form.username,
+                password: this.form.pass })
+              .then(function (res) {
+                if (res.status === 200) {
+                  _this.closeDialog()
+                  _this.$emit(Event.LoginSuccess, { avatar: res.data.avatar, username: res.data.username })
+                  _this.$message({
+                    type: 'success',
+                    message: '登录成功',
+                    center: true,
+                    duration: 2000
+                  })
+                }
+              }).catch(function (err) {
+                _this.$message({
+                  type: 'warning',
+                  message: '登陆失败，请检查用户名和密码是否正确',
+                  center: true,
+                  duration: 2000
+                })
             })
           } else {
             console.log('error submit!!');

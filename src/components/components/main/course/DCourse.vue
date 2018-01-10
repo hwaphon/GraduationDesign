@@ -60,6 +60,7 @@
           let isExist = Cache.exsit(key, page, ops.limit)
           if (isExist) {
             this.courses = Cache.get(key, page, ops.limit)
+            this.total = JSON.parse(sessionStorage.getItem(COUNT))
           } else {
             Request.get(url, ops).then(function (result) {
               let data = result.data.results

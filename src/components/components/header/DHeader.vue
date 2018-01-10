@@ -29,8 +29,8 @@
 <script>
     import Icon from '../../../const/Icon'
     import DLogin from '../global/DLoginAndRegister.vue'
-    import { request } from '@/network/network'
-    import API from '@/const/Api'
+    import Request from '@/network/networkHelper'
+    import API from '@/const/dataApi'
     import { mapState } from 'vuex'
     export default {
       data () {
