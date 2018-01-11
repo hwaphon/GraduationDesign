@@ -16,8 +16,6 @@
 </template>
 
 <script>
-    import API from '@/const/Api'
-    import { request } from '@/network/network'
     import Record from '@/util/record'
     import Helper from '@/util/helper'
     export default {
@@ -51,8 +49,24 @@
           this.email = userinfo.email
           this.date = userinfo.createdAt
         }
-        Record.get().then(function (data) {
-          _this.messages = data
+        Record.get().then(function (res) {
+          if (res.status === 200) {
+            _this.messages = res.data.results
+          } else {
+            this.$message({
+              type: 'warning',
+              duration: 2000,
+              message: '获取动态失败',
+              center: true
+            })
+          }
+        }).catch(function () {
+          this.$message({
+            type: 'warning',
+            duration: 2000,
+            message: '获取动态失败',
+            center: true
+          })
         })
       }
     }

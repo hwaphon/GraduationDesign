@@ -41,6 +41,23 @@ class NetWork {
     })
   }
 
+  register (url, ops) {
+  	let _this = this
+  	return new Promise(function (resolve, reject) {
+  		_this.http.post(url, {
+  			username: ops.username,
+  			password: ops.password
+  		}).then(function (res) {
+  			if (res.status === 201 && res.data.sessionToken) {
+  				_this.http.defaults.headers.common['X-LC-Session'] = res.data.sessionToken
+  				sessionStorage.setItem('USERINFO', JSON.stringify(res.data))
+  			}
+  			resolve(res)
+  		})
+  		.catch(reject)
+  	})
+  }
+
 	params (url, ops) {
 		let arr = _.pairs(ops)
 		let length = arr.length

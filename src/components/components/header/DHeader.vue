@@ -29,8 +29,6 @@
 <script>
     import Icon from '../../../const/Icon'
     import DLogin from '../global/DLoginAndRegister.vue'
-    import Request from '@/network/networkHelper'
-    import API from '@/const/dataApi'
     import { mapState } from 'vuex'
     export default {
       data () {
@@ -84,14 +82,10 @@
         )
       },
       created () {
-        var _this = this
-        request(API.CURRENT, {}, function (result) {
-          if (result.data.avatar) {
-            _this.logined = true
-            _this.userAvatar = result.data.avatar
-            _this.userName = result.data.username
-          }
-        })
+        let userinfo = JSON.parse(sessionStorage.getItem('USERINFO'));
+        if (userinfo) {
+          this.loginSuccess(userinfo)
+        }
       }
     }
 </script>

@@ -1,5 +1,5 @@
-import { request, post } from "../network/network";
-import API from '../const/Api'
+import Request from "../network/networkHelper";
+import API from '../const/dataApi'
 
 class Record {
   save (ops) {
@@ -8,16 +8,8 @@ class Record {
     }
   }
 
-  get () {
-    return new Promise(function (resolve, reject) {
-      request(API.HISTORY, {}, function (res) {
-        if (res.status === 200) {
-          resolve(res.data)
-        } else {
-          reject()
-        }
-      })
-    })
+  get (callback) {
+    return Request.get(API.HISTORY, {})
   }
 }
 
