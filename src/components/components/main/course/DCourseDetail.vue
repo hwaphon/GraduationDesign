@@ -29,9 +29,9 @@
 <script>
     import ChimeePlayer from 'chimee-player';
     import DComments from '../../global/DComments.vue'
-    import { request, post } from '@/network/network'
+    import Request from '@/network/networkHelper'
     import Record from '@/util/record'
-    import API from '@/const/Api'
+    import API from '@/const/dataApi'
     export default {
       data () {
         return {
@@ -52,24 +52,25 @@
         });
 
         let _this = this
-        let result = request(API.GETCOURSEDETAIL, { id: this.id }, function (result) {
-          _this.setInfo(result)
-          _this.record()
-          if (_this.src) {
-            chimee.load(_this.src)
-          }
-        })
+        Request.get(API.COURSEDETAIL, { courseid: this.id })
+          .then(function (res) {
+            _this.setInfo(res.data.results[0])
+            if (_this.src) {
+              chimee.load(_this.src)
+            }
+            _this.record()
+
+          })
 
       },
       methods: {
         setInfo (result) {
-          let data = result.data[0]
-          if (data) {
-            this.title = data.title
-            this.author = data.author
-            this.src = data.vurl
-            this.intro = data.intro
-            this.detail = data.des
+          if (result) {
+            this.title = result.title
+            this.author = result.author
+            this.src = result.vurl
+            this.intro = result.intro
+            this.detail = result.des
           }
         },
         record () {

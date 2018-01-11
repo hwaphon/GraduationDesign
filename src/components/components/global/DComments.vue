@@ -23,8 +23,8 @@
 </template>
 
 <script>
-    import API from '@/const/Api'
-    import { request, post} from '@/network/network'
+    import API from '@/const/dataApi'
+    import Request from '@/network/networkHelper'
     import Record from '@/util/record'
     export default {
       props: {
@@ -82,11 +82,17 @@
       },
       created () {
         let _this = this
-        request(API.COMMENTS, { id: this.id }, function (results) {
-          if (results.status === 200) {
-            _this.comments = results.data
-          }
-        })
+        let param = {
+          where: JSON.stringify({
+            targetId: this.id
+          })
+        }
+        Request.get(API.COMMENTS, param)
+          .then(function (res) {
+            if (res.status === 200) {
+              _this.comments = res.data.results
+            }
+          })
       }
     }
 </script>
