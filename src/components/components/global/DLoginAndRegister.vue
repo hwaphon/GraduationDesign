@@ -20,7 +20,7 @@
                   auto-complete="off"></el-input>
               </el-form-item>
               <el-form-item>
-                <button @click="submitForm('login-form')" class="login-button">登录</button>
+                <button @click.prevent="submitForm('login-form')" class="login-button">登录</button>
               </el-form-item>
             </el-form>
           </div>

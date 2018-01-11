@@ -9,7 +9,11 @@ class Record {
   }
 
   get (callback) {
-    return Request.get(API.HISTORY, {})
+    let userinfo = JSON.parse(sessionStorage.getItem('USERINFO'))
+    let param = {
+      where: JSON.stringify({"user":{"__type":"Pointer","className":"_User","objectId": userinfo.objectId }})
+    }
+    return Request.get(API.HISTORY, param)
   }
 }
 
