@@ -25,6 +25,13 @@ class NetWork {
 		})
 	}
 
+	post (url, ops) {
+		let _this = this
+		return new Promise(function (resolve, reject) {
+			_this.http.post(url, ops).then(resolve, reject)
+		})
+	}
+
 	login (url, ops) {
 	  let _this = this
     return new Promise(function (resolve, reject) {
@@ -68,6 +75,11 @@ class NetWork {
 			} else {
 				url += `&${arr[i][0]}=${arr[i][1]}`
 			}
+		}
+		if (length <= 0) {
+			url += '?order=-updatedAt'
+		} else {
+			url += '&order=-updatedAt'
 		}
 		return url
 	}

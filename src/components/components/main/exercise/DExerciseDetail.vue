@@ -40,9 +40,10 @@
 </template>
 
 <script>
-    import { request } from '@/network/network'
+    import Request from '@/network/networkHelper'
     import Record from '@/util/record'
-    import API from '@/const/Api'
+    import API from '@/const/dataApi'
+    import Tooltip from '@/util/tooltip'
     export default {
       data () {
         return {
@@ -52,7 +53,8 @@
           showDes: false,
           showCheck: false,
           dialogVisible: false,
-          tooltipMsg: ''
+          tooltipMsg: '',
+          tooltip: new Tooltip(this)
         }
       },
       methods: {
@@ -90,10 +92,26 @@
       },
       created () {
         let _this = this
-        request(API.GETEXERCISEDETAIL, { id: _this.$route.params.id }, function (results) {
-          console.log(results)
-          _this.subjects = results.data
-        })
+        let param = {
+          where: JSON.stringify({
+            'pointer': {
+              '__type': 'Pointer',
+              className: 'Exercise',
+              objectId: this.$route.params.id
+            }
+          })
+        }
+        Request.get(API.EXERCISEDETAIL, param)
+          .then(function (res) {
+            if (res.status === 200) {
+              _this.subjects = res.data.results
+            } else {
+              this.tooltip.show('warning', '网络貌似出现了点问题')
+            }
+          })
+          .catch(function () {
+            this.tooltip.show('warning', '一个未知的问题出现了')
+          })
       }
     }
 </script>

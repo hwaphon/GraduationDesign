@@ -52,7 +52,10 @@
         });
 
         let _this = this
-        Request.get(API.COURSEDETAIL, { courseid: this.id })
+        let param = {
+          where: JSON.stringify({ "courseid": this.id })
+        }
+        Request.get(API.COURSEDETAIL, param)
           .then(function (res) {
             _this.setInfo(res.data.results[0])
             if (_this.src) {

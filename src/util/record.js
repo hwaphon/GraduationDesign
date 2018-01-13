@@ -3,8 +3,15 @@ import API from '../const/dataApi'
 
 class Record {
   save (ops) {
-    if (ops.url && ops.content) {
-      post(API.RECORD, { url: ops.url, content: ops.content }, function (res) {})
+    let userinfo = JSON.parse(sessionStorage.getItem('USERINFO'))
+    console.log(userinfo)
+    if (userinfo && ops.url && ops.content) {
+      Request.post(API.HISTORY, { url: ops.url, content: ops.content, user: {
+        '__type': 'Pointer',
+        'className': '_User',
+        'objectId': userinfo.objectId}})
+        .then(function (res) {
+        })
     }
   }
 
