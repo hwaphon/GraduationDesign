@@ -5,7 +5,6 @@ class NetWork {
 	constructor () {
 		this.init()
 	}
-
 	init () {
 		// 以自定义配置生成 axios 实例
 		this.http = axios.create({
@@ -28,9 +27,57 @@ class NetWork {
 	post (url, ops) {
 		let _this = this
 		return new Promise(function (resolve, reject) {
-			_this.http.post(url, ops).then(resolve, reject)
+		  let userinfo = JSON.parse(sessionStorage.getItem('USERINFO'))
+      if (userinfo) {
+        _this.http({
+          method: 'POST',
+          url,
+          data: ops,
+          headers: {
+            'X-LC-Session': userinfo.sessionToken
+          }
+        }).then(resolve).catch(reject)
+      } else {
+        _this.http.post(url, ops).then(resolve, reject)
+      }
 		})
 	}
+
+	put (url, ops) {
+	  let _this = this
+    return new Promise(function (resolve, reject) {
+      let userinfo = JSON.parse(sessionStorage.getItem('USERINFO'))
+      if (userinfo) {
+        _this.http({
+          method: 'PUT',
+          url,
+          data: ops,
+          headers: {
+            'X-LC-Session': userinfo.sessionToken
+          }
+        }).then(resolve).catch(reject)
+      }
+    })
+  }
+
+	updateUser (url, ops) {
+	  let _this = this
+    return new Promise(function (resolve, reject) {
+      let userinfo = JSON.parse(sessionStorage.getItem('USERINFO'))
+      if (userinfo) {
+        _this.http({
+          method: 'PUT',
+          url,
+          data: ops,
+          headers: {
+            'X-LC-Session': userinfo.sessionToken
+          }
+        }).then(resolve, reject)
+      } else {
+        reject({ error: '未登录' })
+      }
+    })
+  }
 
 	login (url, ops) {
 	  let _this = this
@@ -39,8 +86,7 @@ class NetWork {
         username: ops.username,
         password: ops.password
       }).then(function (res) {
-        if (res.status === 200 && res.data.sessionToken) {
-          _this.http.defaults.headers.common['X-LC-Session'] = res.data.sessionToken
+        if (res.status === 200) {
           sessionStorage.setItem('USERINFO', JSON.stringify(res.data))
         }
         resolve(res)
@@ -55,8 +101,7 @@ class NetWork {
   			username: ops.username,
   			password: ops.password
   		}).then(function (res) {
-  			if (res.status === 201 && res.data.sessionToken) {
-  				_this.http.defaults.headers.common['X-LC-Session'] = res.data.sessionToken
+  			if (res.status === 201) {
   				sessionStorage.setItem('USERINFO', JSON.stringify(res.data))
   			}
   			resolve(res)

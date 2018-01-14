@@ -2,7 +2,7 @@
   <div class="dcomments">
     <span class="dcomments-title">少年，请留下你的评论~</span>
     <div class="send-comment">
-      <textarea name="comment" v-model="comment" placeholder="评论不能少于6个字"></textarea>
+      <textarea name="comment" v-model="comment" placeholder="分享一下你的看法吧（不少于6字）"></textarea>
       <div class="send-comment-footer">
         <button @click="postComment">发表评论</button>
       </div>
@@ -26,6 +26,7 @@
     import API from '@/const/dataApi'
     import Request from '@/network/networkHelper'
     import Record from '@/util/record'
+    import Tooltip from '@/util/tooltip'
     export default {
       props: {
         id: {
@@ -38,42 +39,48 @@
       data () {
         return {
           comment: '',
-          comments: []
+          comments: [],
+          tooltip: new Tooltip(this)
         }
       },
       methods: {
         postComment () {
           if (this.comment.length < 6) {
-            this.$message({
-              type: 'warning',
-              message: '请输入最少6字的评论',
-              center: true
-            })
+            this.tooltip.show('warning', '请输入最少6字的评论')
             return
           }
           let _this = this
-          post(API.COMMENTS, { id: this.id, content: this.comment }, function (results) {
-            if (results.status === 200) {
-              let data = results.data
-              if (data.status == 'ok') {
+          let userinfo = JSON.parse(sessionStorage.getItem('USERINFO'))
+          if (userinfo) {
+            Request.post(API.COMMENTS, {
+              targetId: this.id,
+              content: this.comment,
+              avatar: userinfo.avatar,
+              username: userinfo.username,
+              user: {
+                '__type': 'Pointer',
+                className: '_User',
+                objectId: userinfo.objectId
+              }
+            }).then(function (res) {
+              if (res.status === 200 || res.status === 201) {
                 _this.comments.unshift({
-                  avatar: data.avatar,
-                  username: data.username,
+                  avatar: userinfo.avatar,
+                  username: userinfo.username,
                   updatedAt: new Date(),
                   content: _this.comment
                 })
-                _this.$message({ message: data.msg, center: true, type: 'success', duration: 2000 })
-                let url = window.location.href
+                _this.tooltip.show('success', '评论成功')
                 let content = `您在 《${ _this.title }》 主题下发表了一条留言，具体内容可点击查看`
-                Record.save({ url, content })
+                Record.save({ url: window.location.href, content })
                 _this.comment = ''
               } else {
-                _this.$message({ message: data.msg, center: true, type: 'warning', duration: 2000 })
+                _this.tooltip.show('warning', '评论失败，稍后重试')
               }
-            } else {
-              _this.$message({ type: 'warning', message: '网络错误', center: true, duration: 2000 })
-            }
-          })
+            })
+          } else {
+            this.tooltip.show('warning', '请先登录')
+          }
         },
         dateFormate (d) {
           let date = new Date(d)

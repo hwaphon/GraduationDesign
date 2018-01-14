@@ -22,8 +22,8 @@
 </template>
 
 <script>
-    import API from '@/const/Api'
-    import { request, post } from '@/network/network'
+    import API from '@/const/dataApi'
+    import Request from '@/network/networkHelper'
     import DComments from '../../global/DComments.vue'
     export default {
       methods: {
@@ -44,14 +44,18 @@
       },
       created () {
         let _this = this
-        request(API.MESSAGESDETAIL, { id: this.$route.params.id }, function (results) {
-          if (results.status === 200) {
-            let data = results.data
-            _this.avatar = data.avatar
-            _this.username = data.username
-            _this.des = data.des
-          }
-        })
+        let param = {
+          include: 'user'
+        }
+        Request.get(API.MESSAGES + `/${ this.$route.params.id }`, param)
+          .then(function (res) {
+            if (res.status === 200) {
+              let data = res.data
+              _this.avatar = data.user.avatar
+              _this.username = data.user.username
+              _this.des= data.des
+            }
+          })
       }
     }
 </script>

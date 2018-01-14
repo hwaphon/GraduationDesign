@@ -30,7 +30,7 @@
           <el-card>
             <div slot="header" class="clearfix">
               <span class="dexercise-title">{{ exercise.title }}</span>
-              <el-button style="float: right; padding: 3px 0" type="text">我要做题</el-button>
+              <el-button style="float: right; padding: 3px 0" type="text" @click="doExercise(exercise.objectId, exercise.title)">我要做题</el-button>
             </div>
             <div class="text item">
               {{ splitText(exercise.des, 60) }}
@@ -74,6 +74,9 @@
         },
         router (id) {
           this.$router.push(`/course/detail/${id}`)
+        },
+        doExercise (id, title) {
+          this.$router.push({ path: `/exercise/detail/${ id }`, query: { title: title }})
         },
         getCourse (key, url, ops) {
           let _this = this

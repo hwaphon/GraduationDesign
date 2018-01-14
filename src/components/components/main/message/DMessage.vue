@@ -37,11 +37,11 @@
 
 <script>
     import ElInput from "../../../../../node_modules/element-ui/packages/input/src/input.vue";
-    import { request, post } from '@/network/network'
     import Request from '@/network/networkHelper'
     import API from '@/const/dataApi'
     import Cache from '@/util/cache'
     import Record from '@/util/record'
+    import Tooltip from '@/util/tooltip'
     const KEY = 'MESSAGES'
     const COUNT = 'MESSAGECOUNT'
     export default {
@@ -53,7 +53,8 @@
           limit: 12,
           dialogVisible: false,
           topic: '',
-          des: ''
+          des: '',
+          tooltip: new Tooltip(this)
         }
       },
       methods: {
@@ -90,50 +91,41 @@
         },
         addMessageRequest () {
           if (this.topic.length <= 0 || this.des.length <= 0) {
-            this.$message({
-              message: '信息输入不完整',
-              type: 'warning',
-              duration: 2000,
-              center: true
-            })
+            this.tooltip.show('warning', '信息输入不完整')
             return
           }
           let _this = this
-          post(API.MESSAGES, { topic: _this.topic, des: _this.des }, function (res) {
-            if (res.status === 200) {
-              let data = res.data
-              if (data.status === 'ok') {
-                let message = { avatar: data.avatar, topic: data.topic, objectId: data.objectId }
-                _this.messages.unshift(message)
-                Cache.save(KEY, message)
-                _this.total += 1
-                sessionStorage.setItem(COUNT, JSON.stringify(_this.total))
-                _this.dialogVisible = false
-                _this.topic = ''
-                _this.des = ''
-                _this.$message({
-                  message: '发送成功',
-                  type: 'success',
-                  center: true,
-                  duration: 2000,
-                })
-              } else {
-                _this.$message({
-                  message: data.msg,
-                  type: 'warning',
-                  center: true,
-                  duration: 2000
-                })
+          let userinfo = JSON.parse(sessionStorage.getItem('USERINFO'))
+          if (userinfo) {
+            let param = {
+              topic: this.topic,
+              des: this.des,
+              avatar: userinfo.avatar,
+              user: {
+                '__type': 'Pointer',
+                className: '_User',
+                objectId: userinfo.objectId
               }
-            } else {
-              _this.$message({
-                message: '发布失败',
-                type: 'warning',
-                center: true,
-                duration: 2000
-              })
             }
-          })
+            Request.post(API.MESSAGES, param)
+              .then(function (res) {
+                if (res.status === 200 || res.status === 201) {
+                    let message = { avatar: userinfo.avatar, topic: _this.topic, objectId: res.data.objectId }
+                    _this.messages.unshift(message)
+                    Cache.save(KEY, message)
+                    _this.total += 1
+                    sessionStorage.setItem(COUNT, JSON.stringify(_this.total))
+                    _this.dialogVisible = false
+                    _this.topic = ''
+                    _this.des = ''
+                    _this.tooltip.show('success', '发布成功')
+                } else {
+                  _this.tooltip.show('warning', '发布失败')
+                }
+              })
+          } else {
+            this.tooltip.show('warning', '请先登录')
+          }
         }
       },
       created () {

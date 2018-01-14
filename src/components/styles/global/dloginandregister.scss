@@ -16,3 +16,19 @@
   border: none;
   cursor: pointer;
 }
+
+.pass-container {
+  margin-bottom: 0px;
+}
+
+.forget-pass {
+  cursor: pointer;
+  color: #909399;
+  float: right;
+}
+
+.forget-pass:hover {
+  color: #409EFF;
+  transition: color .2s;
+}
+

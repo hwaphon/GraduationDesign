@@ -9,7 +9,11 @@ const API = {
   'LOGIN': 'https://5xonpn1p.api.lncld.net/1.1/login',
   'REGISTER': 'https://5xonpn1p.api.lncld.net/1.1/users',
   'HISTORY': 'https://5xonpn1p.api.lncld.net/1.1/classes/History',
-  'COMMENTS': 'https://5xonpn1p.api.lncld.net/1.1/classes/Comments'
+  'COMMENTS': 'https://5xonpn1p.api.lncld.net/1.1/classes/Comments',
+  'EMAIL': 'https://5xonpn1p.api.lncld.net/1.1/requestEmailVerify',
+  'USERS': 'https://5xonpn1p.api.lncld.net/1.1/users/',
+  'BASH': 'https://5xonpn1p.api.lncld.net/1.1/batch',
+  'RESETPASSWORD': 'https://5xonpn1p.api.lncld.net/1.1/requestPasswordReset'
 }
 
 export default API
