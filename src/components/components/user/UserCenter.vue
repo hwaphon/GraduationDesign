@@ -1,7 +1,7 @@
 <template>
   <div class="usercenter">
     <div class="basic-info">
-      <img :src="avatar" alt="头像" class="avatar" title="点击可更改头像">
+      <img :src="avatar" alt="头像" class="avatar" title="点击可更改头像" @click="avatarChange = true">
       <span class="nickname">{{ username }}</span>
       <span class="email" v-if="email">{{ email }}</span>
       <span class="bind-email" @click="emailVerify = true" v-else>你还没有绑定邮箱，点击绑定</span>
@@ -35,119 +35,168 @@
         <el-button type="primary" @click="bindEmail">绑定</el-button>
       </span>
     </el-dialog>
+    <el-dialog
+      :visible.sync="avatarChange"
+      width="30%">
+      <el-input v-model="bavatar"
+                placeholder="请输入头像的url地址(请携带 http 或 https 头)"></el-input>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="avatarChange = false">取 消</el-button>
+        <el-button type="primary" @click="updateAvatar">绑定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-    import Record from '@/util/record'
-    import Helper from '@/util/helper'
-    import Tooltip from '@/util/tooltip'
-    import API from '@/const/dataApi'
-    import Request from '@/network/networkHelper'
-    export default {
-      data () {
-        return {
-          avatar: '',
-          username: '',
-          email: '',
-          date: '',
-          messages: [],
-          dialogVisible: false,
-          emailVerify: false,
-          bemail: '',
-          tooltip: new Tooltip(this)
-        }
+  import Record from '@/util/record'
+  import Helper from '@/util/helper'
+  import Tooltip from '@/util/tooltip'
+  import API from '@/const/dataApi'
+  import Request from '@/network/networkHelper'
+
+  export default {
+    data() {
+      return {
+        avatar: '',
+        username: '',
+        email: '',
+        date: '',
+        messages: [],
+        dialogVisible: false,
+        emailVerify: false,
+        bemail: '',
+        tooltip: new Tooltip(this),
+        avatarChange: false,
+        bavatar: ''
+      }
+    },
+    computed: {
+      createdAt() {
+        let date = new Date(this.date)
+        return `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日`
+      }
+    },
+    methods: {
+      formateDate(date) {
+        return Helper.formateDate(date)
       },
-      computed: {
-        createdAt () {
-          let date = new Date(this.date)
-          return `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日`
-        }
-      },
-      methods: {
-        formateDate (date) {
-          return Helper.formateDate(date)
-        },
-        loginout () {
-          this.dialogVisible = false
-          this.$router.push('/')
-          window.location.reload()
-          sessionStorage.removeItem('USERINFO')
-        },
-        isEmail (email) {
-          let emailReg = /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/g
-          return emailReg.test(email)
-        },
-        verifyEmail () {
-          if (!this.isEmail(this.bemail)) {
-            this.tooltip.show('warning', '请输入合法的邮箱地址')
-            return false
+      isValidUrl(url) {
+        if (!!~url.indexOf('.png') || !!~url.indexOf('.jpg') || !!~url.indexOf('.jpeg')) {
+          let urlRegExp = /^((https|http|ftp|rtsp|mms)?:\/\/)+[A-Za-z0-9]+\.[A-Za-z0-9]+[\/=\?%\-&_~`@[\]\':+!]*([^<>\"\"])*$/
+          if (urlRegExp.test(url)) {
+            return true;
           }
-          return true
-        },
-        bindEmail () {
-          if (this.verifyEmail()) {
+        }
+        return false
+      },
+      updateAvatar() {
+        if (this.isValidUrl(this.bavatar)) {
+          let userinfo = JSON.parse(sessionStorage.getItem('USERINFO'))
+          if (userinfo) {
             let _this = this
-            let userinfo = JSON.parse(sessionStorage.getItem('USERINFO'))
-            Request.updateUser(API.USERS + userinfo.objectId, { email: this.bemail})
+            let param = {
+              avatar: this.bavatar
+            }
+            Request.put(API.USERS + userinfo.objectId, param)
               .then(function (res) {
-                if (res.status === 200 || res.status === 201) {
-                  Request.post(API.EMAIL, { email: _this.bemail})
-                    .then(function (res) {
-                      if (res.status === 200 || res.status === 201) {
-                        _this.tooltip.show('success', '发送验证邮件成功，快去邮箱确认吧')
-                        _this.email = _this.bemail
-                        let userinfo = JSON.parse(sessionStorage.getItem('USERINFO'))
-                        if (userinfo) {
-                          userinfo.email = _this.bemail
-                          sessionStorage.setItem('USERINFO', JSON.stringify(userinfo))
-                        }
-                        _this.emailVerify = false
-                      }
-                    })
-                    .catch(function () {
-                      _this.tooltip.show('warning', '发送验证邮件失败')
-                    })
+                if (res.status === 200) {
+                  _this.avatarChange = false
+                  _this.avatar = _this.bavatar
+                  _this.bavatar = ''
+                  userinfo.avatar = _this.avatar
+                  sessionStorage.setItem('USERINFO', JSON.stringify(userinfo))
                 } else {
-                 _this.tooltip.show('warning', '绑定邮箱失败')
+
                 }
-              }).catch(function () {
-                _this.tooltip.show('warning', '绑定邮箱失败')
-            })
+              })
+          } else {
+            this.tooltip.show('warning', '请先登录')
           }
+        } else {
+          this.tooltip.show('warning', '请输入合法的 url 地址')
         }
       },
-      created () {
-        let _this = this
-        this.$store.dispatch('updateCurrentIndex', -1)
-        let userinfo = JSON.parse(sessionStorage.getItem('USERINFO'))
-        if (userinfo) {
-          this.avatar = userinfo.avatar
-          this.username = userinfo.username
-          this.email = userinfo.email
-          this.date = userinfo.createdAt
+      loginout() {
+        this.dialogVisible = false
+        this.$router.push('/')
+        window.location.reload()
+        sessionStorage.removeItem('USERINFO')
+      },
+      isEmail(email) {
+        let emailReg = /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/g
+        return emailReg.test(email)
+      },
+      verifyEmail() {
+        if (!this.isEmail(this.bemail)) {
+          this.tooltip.show('warning', '请输入合法的邮箱地址')
+          return false
         }
-        Record.get().then(function (res) {
-          if (res.status === 200) {
-            _this.messages = res.data.results
-          } else {
-            this.$message({
-              type: 'warning',
-              duration: 2000,
-              message: '获取动态失败',
-              center: true
-            })
-          }
-        }).catch(function () {
+        return true
+      },
+      bindEmail() {
+        if (this.verifyEmail()) {
+          let _this = this
+          let userinfo = JSON.parse(sessionStorage.getItem('USERINFO'))
+          Request.updateUser(API.USERS + userinfo.objectId, {email: this.bemail})
+            .then(function (res) {
+              if (res.status === 200 || res.status === 201) {
+                Request.post(API.EMAIL, {email: _this.bemail})
+                  .then(function (res) {
+                    if (res.status === 200 || res.status === 201) {
+                      _this.tooltip.show('success', '发送验证邮件成功，快去邮箱确认吧')
+                      _this.email = _this.bemail
+                      let userinfo = JSON.parse(sessionStorage.getItem('USERINFO'))
+                      if (userinfo) {
+                        userinfo.email = _this.bemail
+                        sessionStorage.setItem('USERINFO', JSON.stringify(userinfo))
+                      }
+                      _this.emailVerify = false
+                    }
+                  })
+                  .catch(function () {
+                    _this.tooltip.show('warning', '发送验证邮件失败')
+                  })
+              } else {
+                _this.tooltip.show('warning', '绑定邮箱失败')
+              }
+            }).catch(function () {
+            _this.tooltip.show('warning', '绑定邮箱失败')
+          })
+        }
+      }
+    },
+    created() {
+      let _this = this
+      this.$store.dispatch('updateCurrentIndex', -1)
+      let userinfo = JSON.parse(sessionStorage.getItem('USERINFO'))
+      if (userinfo) {
+        this.avatar = userinfo.avatar
+        this.username = userinfo.username
+        this.email = userinfo.email
+        this.date = userinfo.createdAt
+      }
+      Record.get().then(function (res) {
+        if (res.status === 200) {
+          _this.messages = res.data.results
+        } else {
           this.$message({
             type: 'warning',
             duration: 2000,
             message: '获取动态失败',
             center: true
           })
+        }
+      }).catch(function () {
+        this.$message({
+          type: 'warning',
+          duration: 2000,
+          message: '获取动态失败',
+          center: true
         })
-      }
+      })
     }
+  }
 </script>
 
 <style scoped lang="scss">
