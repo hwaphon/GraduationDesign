@@ -19,6 +19,15 @@
         <div class="dcomment-content">{{ comment.content }}</div>
       </div>
     </div>
+    <div class="pagination" v-if="total / limit >= 1">
+      <el-pagination
+        @current-change="pageChange"
+        background
+        layout="prev, pager, next"
+        :page-size="limit"
+        :total="total">
+      </el-pagination>
+    </div>
   </div>
 </template>
 
@@ -40,10 +49,16 @@
         return {
           comment: '',
           comments: [],
-          tooltip: new Tooltip(this)
+          tooltip: new Tooltip(this),
+          total: 0,
+          limit: 8
         }
       },
       methods: {
+        pageChange (index) {
+          let realIndex = index - 1
+          this.getComments(realIndex * this.limit)
+        },
         postComment () {
           if (this.comment.length < 6) {
             this.tooltip.show('warning', '请输入最少6字的评论')
@@ -85,21 +100,28 @@
         dateFormate (d) {
           let date = new Date(d)
           return `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日`
+        },
+        getComments (skip) {
+          let _this = this
+          let param = {
+            where: JSON.stringify({
+              targetId: this.id
+            }),
+            limit: this.limit,
+            skip: skip,
+            count: 1
+          }
+          Request.get(API.COMMENTS, param)
+            .then(function (res) {
+              if (res.status === 200) {
+                _this.comments = res.data.results
+                _this.total = res.data.count
+              }
+            })
         }
       },
       created () {
-        let _this = this
-        let param = {
-          where: JSON.stringify({
-            targetId: this.id
-          })
-        }
-        Request.get(API.COMMENTS, param)
-          .then(function (res) {
-            if (res.status === 200) {
-              _this.comments = res.data.results
-            }
-          })
+        this.getComments(0)
       }
     }
 </script>

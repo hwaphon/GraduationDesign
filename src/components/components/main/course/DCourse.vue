@@ -5,7 +5,8 @@
               v-for="(course, index) in courses"
               :key="index"
               class="col-content">
-        <el-card :body-style="{ padding: '0px' }">
+        <el-card :body-style="{ padding: '0px' }" class="card">
+          <span class="tag" v-if="course.pc">实验录像</span>
           <img :src="course.picUrl" class="image">
           <div style="padding: 14px;">
             <span class="title">{{ course.title }}</span>

@@ -38,8 +38,7 @@
             { name: '视频课程', index: 0, path: '/course' },
             { name: '习题练习', index: 1, path: '/exercise' },
             { name: '作业发布', index: 2, path: '/task' },
-            { name: '留言讨论', index: 3, path: '/message' },
-            { name: '实验指导', index: 4, path: '/practice' }
+            { name: '留言讨论', index: 3, path: '/message' }
           ],
           showModel: false,
           activeName: 'login',
