@@ -46,6 +46,8 @@
 
 .message img {
   width: 126px;
+  object-fit: cover;
+  object-position: center;
   height: 126px;
   border-radius: 100%;
   transform: rotate(0deg);

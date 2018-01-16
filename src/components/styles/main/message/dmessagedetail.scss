@@ -40,9 +40,12 @@
 }
 
 .user img {
-  width: 24px;
-  height: 24px;
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+  object-position: center;
   border-radius: 100%;
+
 }
 
 .user .name {

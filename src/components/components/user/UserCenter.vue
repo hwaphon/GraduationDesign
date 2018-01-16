@@ -106,8 +106,8 @@
                   _this.bavatar = ''
                   userinfo.avatar = _this.avatar
                   sessionStorage.setItem('USERINFO', JSON.stringify(userinfo))
+                  window.location.reload()
                 } else {
-
                 }
               })
           } else {

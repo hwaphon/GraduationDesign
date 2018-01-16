@@ -85,9 +85,6 @@
         if (userinfo) {
           this.loginSuccess(userinfo)
         }
-        $(window).on('storage', function (e) {
-          console.log(e)
-        })
       }
     }
 </script>

@@ -13,6 +13,8 @@
   transform: rotate(0deg);
   transition: transform .4s;
   cursor: pointer;
+  object-fit: cover;
+  object-position: center;
 }
 
 .avatar:hover {

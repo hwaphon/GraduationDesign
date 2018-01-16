@@ -68,3 +68,18 @@ span.title {
   text-overflow: ellipsis;
   overflow: hidden;
 }
+
+.card {
+  position: relative;
+}
+
+.tag {
+  z-index: 99;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 4px 8px;
+  color: #FFF;
+  background-color: #409EFF;
+  border-bottom-right-radius: 4px;
+}
