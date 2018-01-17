@@ -1,6 +1,9 @@
 <template>
   <div class="dcourse">
-    <el-row :gutter="20">
+    <el-row :gutter="20" class="custom-container"
+            :style="{ 'padding-top': userinfo.isTeacher ? '64px' : '0px' }">
+      <i v-if="userinfo.isTeacher" class="fa fa-plus add-video"
+         aria-hidden="true" title="点击发布新视屏" @click="dialogVisible = true"></i>
       <el-col :span="6"
               v-for="(course, index) in courses"
               :key="index"
@@ -26,6 +29,25 @@
         :total="total">
       </el-pagination>
     </div>
+    <el-dialog
+      v-if="userinfo.isTeacher"
+      title="发布新视频"
+      :visible.sync="dialogVisible"
+      width="30%">
+      <p class="input-label"><el-input v-model="newCourse.title" placeholder="课程标题"></el-input></p>
+      <p class="input-label"><el-input v-model="newCourse.intro"
+                                       placeholder="课程简介" type="textarea" :rows="3"></el-input></p>
+      <p class="input-label"><el-input v-model="newCourse.des"
+                                       placeholder="课程讲义" type="textarea" :rows="3"></el-input></p>
+      <p class="input-label"><el-input v-model="newCourse.vurl" placeholder="视频地址(url)"></el-input></p>
+      <p class="input-label"><el-input v-model="newCourse.picUrl" placeholder="封面图片地址(url, 可选)"></el-input></p>
+      <p class="input-label"><el-input v-model="newCourse.ppt"
+                                       placeholder="ppt地址（可选，如果指定则设置视频为实验录像）"></el-input></p>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="addCourse">确定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -34,6 +56,7 @@
     import API from '@/const/dataApi'
     import Request from '@/network/networkHelper'
     import Cache from '@/util/cache'
+    import Tooltip from '@/util/tooltip'
     const COUNT = 'COURSECOUNT'
     export default {
       data () {
@@ -41,10 +64,51 @@
           courses: [],
           total: 0,
           limit: 12,
-          key: 'COURSE'
+          key: 'COURSE',
+          tooltip: new Tooltip(this),
+          userinfo: {},
+          dialogVisible: false,
+          newCourse: {
+            title: '',
+            picUrl: '',
+            ppt: '',
+            intro: '',
+            des: '',
+            vurl: ''
+          }
         }
       },
       methods: {
+        addCourse () {
+          if (this.checkAll()) {
+            let userinfo = JSON.parse(sessionStorage.getItem('USERINFO'))
+          } else {
+          }
+        },
+        checkAll () {
+          if (
+              !this.newCourse.title ||
+              !this.newCourse.intro ||
+              !this.newCourse.des ||
+              !this.newCourse.vurl
+          ) {
+            this.tooltip.show('warning', '有必选项未填写')
+            return false
+          }
+
+          if (!this.isValidUrl(this.newCourse.vurl)) {
+            this.tooltip.show('warning', '视频地址不是合法的 url 地址')
+            return false
+          }
+          return true
+        },
+        isValidUrl(url) {
+          let urlRegExp = /^((https|http|ftp|rtsp|mms)?:\/\/)+[A-Za-z0-9]+\.[A-Za-z0-9]+[\/=\?%\-&_~`@[\]\':+!]*([^<>\"\"])*$/
+          if (urlRegExp.test(url)) {
+            return true;
+          }
+          return false
+        },
         pageChange (index) {
           let realIndex = index - 1
           this.getCourse(this.key, API.COURSE, { skip: realIndex * this.limit, limit: this.limit })
@@ -79,6 +143,10 @@
       },
       created () {
         this.getCourse(this.key, API.COURSE, { limit: 12, skip: 0, count: 1 })
+        let userinfo = JSON.parse(sessionStorage.getItem('USERINFO'))
+        if (userinfo) {
+          this.userinfo = userinfo
+        }
       }
     }
 </script>

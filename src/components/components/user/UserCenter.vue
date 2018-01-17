@@ -2,7 +2,7 @@
   <div class="usercenter">
     <div class="basic-info">
       <img :src="avatar" alt="头像" class="avatar" title="点击可更改头像" @click="avatarChange = true">
-      <span class="nickname">{{ username }}</span>
+      <span class="nickname">{{ username }}<em v-if="isTeacher" class="teacher">(教师)</em></span>
       <span class="email" v-if="email">{{ email }}</span>
       <span class="bind-email" @click="emailVerify = true" v-else>你还没有绑定邮箱，点击绑定</span>
       <span class="date">{{ createdAt }}加入在线学习平台</span>
@@ -68,7 +68,8 @@
         bemail: '',
         tooltip: new Tooltip(this),
         avatarChange: false,
-        bavatar: ''
+        bavatar: '',
+        isTeacher: false
       }
     },
     computed: {
@@ -175,26 +176,29 @@
         this.username = userinfo.username
         this.email = userinfo.email
         this.date = userinfo.createdAt
-      }
-      Record.get().then(function (res) {
-        if (res.status === 200) {
-          _this.messages = res.data.results
-        } else {
+        this.isTeacher = userinfo.isTeacher
+        Record.get().then(function (res) {
+          if (res.status === 200) {
+            _this.messages = res.data.results
+          } else {
+            this.$message({
+              type: 'warning',
+              duration: 2000,
+              message: '获取动态失败',
+              center: true
+            })
+          }
+        }).catch(function () {
           this.$message({
             type: 'warning',
             duration: 2000,
             message: '获取动态失败',
             center: true
           })
-        }
-      }).catch(function () {
-        this.$message({
-          type: 'warning',
-          duration: 2000,
-          message: '获取动态失败',
-          center: true
         })
-      })
+      } else {
+        this.tooltip.show('warning', '请先登录')
+      }
     }
   }
 </script>

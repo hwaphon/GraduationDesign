@@ -1,6 +1,9 @@
 <template>
   <div class="dexercise">
-    <el-row :gutter="20">
+    <el-row :gutter="20" class="custom-container"
+            :style="{ 'padding-top': isTeacher ? '64px' : '0px' }">
+      <i v-if="isTeacher" class="fa fa-plus add-exercise"
+         aria-hidden="true" title="点击发布新练习"></i>
       <el-col :span="6" v-for="(exercise, index) in exercises" :key="index" class="col-content">
         <el-card>
           <div slot="header" class="clearfix">
@@ -37,7 +40,8 @@
         return {
           exercises: [],
           total: 0,
-          limit: 16
+          limit: 16,
+          isTeacher: false
         }
       },
       methods: {
@@ -78,6 +82,10 @@
       },
       created () {
         this.getExercises(KEY, API.EXERCISE, { limit: this.limit, skip: 0, count: 1 })
+        let userinfo = JSON.parse(sessionStorage.getItem('USERINFO'))
+        if (userinfo) {
+          this.isTeacher = userinfo.isTeacher
+        }
       }
     }
 </script>

@@ -115,6 +115,7 @@
             .then(function (res) {
               if (res.status === 200) {
                 _this.comments = res.data.results
+                console.log(_this.comments)
                 _this.total = res.data.count
               }
             })

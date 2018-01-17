@@ -179,6 +179,7 @@
                   _this.closeDialog()
                   _this.$emit(Event.LoginSuccess, { avatar: res.data.avatar, username: res.data.username })
                   _this.showMessage('success', '登录成功')
+                  window.location.reload()
                 }
               }).catch(function (err) {
                 _this.showMessage('warning', '登陆失败，请检查用户名和密码是否正确')
@@ -190,7 +191,8 @@
             }).then(function (res) {
               if (res.status === 201) {
                 _this.closeDialog()
-                _this.$emit(Event.LoginSuccess, { avatar: res.data.avatar, username: res.data.username })
+                _this.$emit(Event.LoginSuccess, { avatar: res.data.avatar,
+                  username: res.data.username, isTeacher: res.data.isTeacher })
                 _this.showMessage('success', '注册成功')
               }
             })

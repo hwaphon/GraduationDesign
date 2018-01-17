@@ -10,6 +10,7 @@
   padding: 0 16px;
   margin: 0 auto;
   border-radius: 8px;
+  position: relative;
 }
 
 .dtask-detail {
@@ -39,3 +40,29 @@
   align-items: center;
   justify-content: center;
 }
+
+i.add-task {
+  position: absolute;
+  top: -56px;
+  right: 0px;
+  width: 48px;
+  height: 48px;
+  border-radius: 100%;
+  background-color: #409EFF;
+  line-height: 48px;
+  text-align: center;
+  color: #FFFFFF;
+  cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 12px 0px;
+  z-index: 2;
+}
+
+i.add-task:hover {
+  transform: scale(1.1);
+  transition: transform .2s;
+}
+
+p.input-label {
+  margin-bottom: 16px;
+}
+

@@ -19,7 +19,7 @@
       </div>
       <div class="dheader-userinfo" v-else title="点击查看个人中心" @click="goUserCenter">
         <img :src="userAvatar" alt="头像">
-        <span>{{ userName }}</span>
+        <span>{{ userName }}<em v-if="isTeacher" class="teacher">(教师)</em></span>
       </div>
     </section>
     <DLogin v-model="showModel" :activeName="activeName" @onSuccess="loginSuccess"></DLogin>
@@ -44,7 +44,8 @@
           activeName: 'login',
           logined: false,
           userAvatar: '',
-          userName: ''
+          userName: '',
+          isTeacher: false
         }
       },
       methods: {
@@ -67,6 +68,7 @@
           this.logined = true
           this.userName = data.username
           this.userAvatar = data.avatar
+          this.isTeacher = data.isTeacher
         },
         goUserCenter () {
           this.$router.push('/usercenter')

@@ -58,3 +58,16 @@
   margin-top: $base-section-padding;
   width: 720px;
 }
+
+.card-info {
+  margin-bottom: 16px;
+}
+
+.download {
+  color: #909399;
+}
+
+.download:hover {
+  color: #409EFF;
+  transition: color .2s;
+}

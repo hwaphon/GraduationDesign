@@ -26,7 +26,7 @@
       :visible.sync="dialogVisible"
       width="30%">
       <p :style="{ 'margin-bottom': '16px' }"><el-input type="text" v-model="topic" placeholder="主题"></el-input></p>
-      <p><el-input type="textarea" v-model="des" placeholder="详细描述"></el-input></p>
+      <p><el-input type="textarea" v-model="des" placeholder="详细描述" :rows="3"></el-input></p>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="addMessageRequest">发布</el-button>

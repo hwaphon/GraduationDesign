@@ -11,11 +11,16 @@
         <div id="video"></div>
       </div>
       <div class="dcourse-detail-info">
-        <el-card>
-          <div class="card-info">
+        <el-card class="card-info">
+          <div>
             <div class="box">作者<span class="author">{{ author }}</span></div>
             <div class="box">课程简介<p class="intro">{{ intro }}</p></div>
             <div class="box">课程讲义<p class="intro">{{ detail }}</p></div>
+          </div>
+        </el-card>
+        <el-card v-if="ppt">
+          <div>
+            <a href="http://p0q1vpjvw.bkt.clouddn.com/%E5%AE%9E%E9%AA%8Cppt.pptx" class="download">点击下载课件</a>
           </div>
         </el-card>
       </div>
@@ -40,7 +45,8 @@
           intro: '',
           detail: '',
           src: '',
-          id: this.$route.params.id
+          id: this.$route.params.id,
+          ppt: ''
         }
       },
       mounted () {
@@ -74,6 +80,7 @@
             this.src = result.vurl
             this.intro = result.intro
             this.detail = result.des
+            this.ppt = result.ppt
           }
         },
         record () {
