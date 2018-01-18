@@ -82,6 +82,55 @@
         addCourse () {
           if (this.checkAll()) {
             let userinfo = JSON.parse(sessionStorage.getItem('USERINFO'))
+            if (userinfo) {
+              let _this = this
+              let param = {
+                title: this.newCourse.title,
+              }
+              if (this.newCourse.picUrl) {
+                param.picUrl = this.newCourse.picUrl
+              }
+              if (this.newCourse.ppt) {
+                param.pc = true
+              } else {
+                param.pc = false
+              }
+
+              Request.post(API.COURSE + '?fetchWhenSave=true', param)
+                .then(function (res) {
+                  if (res.status === 200 || res.status === 201) {
+                    let course = res.data
+                    _this.courses.unshift(course)
+                    param = {
+                      title: _this.newCourse.title,
+                      author: userinfo.username,
+                      vurl: _this.newCourse.vurl,
+                      intro: _this.newCourse.intro,
+                      des: _this.newCourse.des,
+                      courseid: course.objectId
+                    }
+                    if (_this.newCourse.ppt) {
+                      param.ppt = _this.newCourse.ppt
+                    }
+
+                    Request.post(API.COURSEDETAIL, param)
+                      .then(function (res) {
+                        if (res.status === 200 || res.status === 201) {
+                          _this.tooltip.show('success', '添加成功')
+                          _this.newCourse.title = ''
+                          _this.newCourse.des = ''
+                          _this.newCourse.vurl = ''
+                          _this.newCourse.ppt = ''
+                          _this.newCourse.picUrl = ''
+                          _this.newCourse.intro = ''
+                          _this.dialogVisible = false
+                        } else {
+                          _this.tooltip.show('warning', '添加失败，请稍后重试')
+                        }
+                      })
+                  }
+                })
+            }
           } else {
           }
         },
