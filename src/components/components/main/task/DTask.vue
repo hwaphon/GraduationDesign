@@ -89,6 +89,9 @@
                 if (res.status === 200 || res.status === 201) {
                   let task = { ...param, objectId: res.data.objectId, createdAt: res.data.createdAt }
                   _this.tasks.unshift(task)
+                  Cache.save(KEY, task)
+                  _this.total += 1
+                  sessionStorage.setItem(COUNT, _this.total)
                   _this.dialogVisible = false
                   _this.tooltip.show('success', '发布成功')
                   _this.newTask.title = ''

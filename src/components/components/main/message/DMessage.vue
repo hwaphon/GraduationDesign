@@ -112,6 +112,9 @@
                 if (res.status === 200 || res.status === 201) {
                     let message = { avatar: userinfo.avatar, topic: _this.topic, objectId: res.data.objectId }
                     _this.messages.unshift(message)
+                    Cache.save(KEY, message)
+                    _this.total += 1
+                    sessionStorage.setItem(COUNT, _this.total)
                     _this.dialogVisible = false
                     _this.topic = ''
                     _this.des = ''
