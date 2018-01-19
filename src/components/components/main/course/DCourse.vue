@@ -81,7 +81,7 @@
       methods: {
         addCourse () {
           if (this.checkAll()) {
-            let userinfo = JSON.parse(sessionStorage.getItem('USERINFO'))
+            let userinfo = JSON.parse(localStorage.getItem('USERINFO'))
             if (userinfo) {
               let _this = this
               let param = {
@@ -101,9 +101,6 @@
                   if (res.status === 200 || res.status === 201) {
                     let course = res.data
                     _this.courses.unshift(course)
-                    Cache.save(_this.key, course)
-                    _this.total += 1
-                    sessionStorage.setItem(COUNT, _this.total)
                     param = {
                       title: _this.newCourse.title,
                       author: userinfo.username,
@@ -195,7 +192,7 @@
       },
       created () {
         this.getCourse(this.key, API.COURSE, { limit: 12, skip: 0, count: 1 })
-        let userinfo = JSON.parse(sessionStorage.getItem('USERINFO'))
+        let userinfo = JSON.parse(localStorage.getItem('USERINFO'))
         if (userinfo) {
           this.userinfo = userinfo
         }

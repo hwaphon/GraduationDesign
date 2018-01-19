@@ -93,7 +93,7 @@
       },
       updateAvatar() {
         if (this.isValidUrl(this.bavatar)) {
-          let userinfo = JSON.parse(sessionStorage.getItem('USERINFO'))
+          let userinfo = JSON.parse(localStorage.getItem('USERINFO'))
           if (userinfo) {
             let _this = this
             let param = {
@@ -106,7 +106,7 @@
                   _this.avatar = _this.bavatar
                   _this.bavatar = ''
                   userinfo.avatar = _this.avatar
-                  sessionStorage.setItem('USERINFO', JSON.stringify(userinfo))
+                  localStorage.setItem('USERINFO', JSON.stringify(userinfo))
                   window.location.reload()
                 } else {
                 }
@@ -122,7 +122,7 @@
         this.dialogVisible = false
         this.$router.push('/')
         window.location.reload()
-        sessionStorage.removeItem('USERINFO')
+        localStorage.removeItem('USERINFO')
       },
       isEmail(email) {
         let emailReg = /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/g
@@ -138,7 +138,7 @@
       bindEmail() {
         if (this.verifyEmail()) {
           let _this = this
-          let userinfo = JSON.parse(sessionStorage.getItem('USERINFO'))
+          let userinfo = JSON.parse(localStorage.getItem('USERINFO'))
           Request.updateUser(API.USERS + userinfo.objectId, {email: this.bemail})
             .then(function (res) {
               if (res.status === 200 || res.status === 201) {
@@ -147,10 +147,10 @@
                     if (res.status === 200 || res.status === 201) {
                       _this.tooltip.show('success', '发送验证邮件成功，快去邮箱确认吧')
                       _this.email = _this.bemail
-                      let userinfo = JSON.parse(sessionStorage.getItem('USERINFO'))
+                      let userinfo = JSON.parse(localStorage.getItem('USERINFO'))
                       if (userinfo) {
                         userinfo.email = _this.bemail
-                        sessionStorage.setItem('USERINFO', JSON.stringify(userinfo))
+                        localStorage.setItem('USERINFO', JSON.stringify(userinfo))
                       }
                       _this.emailVerify = false
                     }
@@ -170,7 +170,7 @@
     created() {
       let _this = this
       this.$store.dispatch('updateCurrentIndex', -1)
-      let userinfo = JSON.parse(sessionStorage.getItem('USERINFO'))
+      let userinfo = JSON.parse(localStorage.getItem('USERINFO'))
       if (userinfo) {
         this.avatar = userinfo.avatar
         this.username = userinfo.username

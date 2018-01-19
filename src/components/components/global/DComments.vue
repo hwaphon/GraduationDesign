@@ -65,7 +65,7 @@
             return
           }
           let _this = this
-          let userinfo = JSON.parse(sessionStorage.getItem('USERINFO'))
+          let userinfo = JSON.parse(localStorage.getItem('USERINFO'))
           if (userinfo) {
             Request.post(API.COMMENTS, {
               targetId: this.id,
@@ -115,7 +115,6 @@
             .then(function (res) {
               if (res.status === 200) {
                 _this.comments = res.data.results
-                console.log(_this.comments)
                 _this.total = res.data.count
               }
             })

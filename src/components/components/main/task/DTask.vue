@@ -89,9 +89,6 @@
                 if (res.status === 200 || res.status === 201) {
                   let task = { ...param, objectId: res.data.objectId, createdAt: res.data.createdAt }
                   _this.tasks.unshift(task)
-                  Cache.save(KEY, task)
-                  _this.total += 1
-                  sessionStorage.setItem(COUNT, _this.total)
                   _this.dialogVisible = false
                   _this.tooltip.show('success', '发布成功')
                   _this.newTask.title = ''
@@ -136,7 +133,7 @@
       },
       created () {
         this.getTasks(KEY, API.TASK, { skip: 0, limit: this.limit, count: 1 })
-        let userinfo = JSON.parse(sessionStorage.getItem('USERINFO'))
+        let userinfo = JSON.parse(localStorage.getItem('USERINFO'))
         if (userinfo) {
           this.userinfo = userinfo
         }

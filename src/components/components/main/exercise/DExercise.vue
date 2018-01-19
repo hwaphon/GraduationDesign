@@ -53,6 +53,7 @@
     import Tooltip from '@/util/tooltip'
     const KEY = 'EXERCISE'
     const COUNT = 'EXERCISECOUNT'
+    const ADDED = 'EXERCISEADDED'
     export default {
       data () {
         return {
@@ -73,8 +74,57 @@
       methods: {
         addExercise () {
           if (this.checkAll()) {
-            console.log(this.newExercise)
+            let _this = this
+            let param = {
+              title: this.newExercise.title,
+              des: this.newExercise.des
+            }
+            Request.post(API.EXERCISE, param)
+              .then(function (res) {
+                if (res.status === 200 || res.status === 201) {
+                  param.objectId = res.data.objectId
+                  _this.exercises.unshift(param)
+                  param = {
+                    requests: _this.getBodyData(res.data.objectId)
+                  }
+                  Request.post(API.BATCH, param)
+                    .then(function (res) {
+                      if (res.status === 200 || res.status === 201) {
+                        _this.tooltip.show('success', '上传成功')
+                        _this.end()
+                      } else {
+                        _this.tooltip.show('warning', '上传失败')
+                      }
+                    })
+                } else {
+                  _this.tooltip.show('warning', '上传失败')
+                }
+              })
           }
+        },
+        end () {
+          this.newExercise.title = ''
+          this.newExercise.des = ''
+          this.newExercise.subjects = []
+          this.fileName = ''
+          this.dialogVisible = false
+        },
+        getBodyData (id) {
+          let body = []
+          let data = this.newExercise.subjects
+          data.forEach(function (item) {
+            item.pointer = {
+              '__type': 'Pointer',
+              className: 'Exercise',
+              objectId: id
+            }
+            body.push({
+              method: 'POST',
+              path: '/1.1/classes/Subjects',
+              body: item
+            })
+          })
+          return body
         },
         checkAll () {
           if (!this.newExercise.title) {
@@ -150,7 +200,7 @@
       },
       created () {
         this.getExercises(KEY, API.EXERCISE, { limit: this.limit, skip: 0, count: 1 })
-        let userinfo = JSON.parse(sessionStorage.getItem('USERINFO'))
+        let userinfo = JSON.parse(localStorage.getItem('USERINFO'))
         if (userinfo) {
           this.userinfo = userinfo
         }

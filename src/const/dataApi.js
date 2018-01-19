@@ -13,7 +13,8 @@ const API = {
   'EMAIL': 'https://5xonpn1p.api.lncld.net/1.1/requestEmailVerify',
   'USERS': 'https://5xonpn1p.api.lncld.net/1.1/users/',
   'BASH': 'https://5xonpn1p.api.lncld.net/1.1/batch',
-  'RESETPASSWORD': 'https://5xonpn1p.api.lncld.net/1.1/requestPasswordReset'
+  'RESETPASSWORD': 'https://5xonpn1p.api.lncld.net/1.1/requestPasswordReset',
+  'BATCH': 'https://5xonpn1p.api.lncld.net/1.1/batch'
 }
 
 export default API

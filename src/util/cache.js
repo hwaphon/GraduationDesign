@@ -3,13 +3,17 @@ class Cache {
     this._ = global.sessionStorage
   }
 
-  save (key, data) {
+  save (key, data, added = false) {
     let isExsit = this.exsit(key)
     let tmpData = []
     if (isExsit) {
       tmpData = this.getItemByKey(key)
     }
-    tmpData = tmpData.concat(data)
+    if (added) {
+      tmpData = [].concat(data, tmpData)
+    } else {
+      tmpData = tmpData.concat(data)
+    }
     this._.setItem(key, JSON.stringify(tmpData))
   }
 

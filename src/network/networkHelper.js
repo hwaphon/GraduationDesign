@@ -27,7 +27,7 @@ class NetWork {
 	post (url, ops) {
 		let _this = this
 		return new Promise(function (resolve, reject) {
-		  let userinfo = JSON.parse(sessionStorage.getItem('USERINFO'))
+		  let userinfo = JSON.parse(localStorage.getItem('USERINFO'))
       if (userinfo) {
         _this.http({
           method: 'POST',
@@ -46,7 +46,7 @@ class NetWork {
 	put (url, ops) {
 	  let _this = this
     return new Promise(function (resolve, reject) {
-      let userinfo = JSON.parse(sessionStorage.getItem('USERINFO'))
+      let userinfo = JSON.parse(localStorage.getItem('USERINFO'))
       if (userinfo) {
         _this.http({
           method: 'PUT',
@@ -63,7 +63,7 @@ class NetWork {
 	updateUser (url, ops) {
 	  let _this = this
     return new Promise(function (resolve, reject) {
-      let userinfo = JSON.parse(sessionStorage.getItem('USERINFO'))
+      let userinfo = JSON.parse(localStorage.getItem('USERINFO'))
       if (userinfo) {
         _this.http({
           method: 'PUT',
@@ -87,7 +87,7 @@ class NetWork {
         password: ops.password
       }).then(function (res) {
         if (res.status === 200) {
-          sessionStorage.setItem('USERINFO', JSON.stringify(res.data))
+          localStorage.setItem('USERINFO', JSON.stringify(res.data))
         }
         resolve(res)
       }).catch(reject)
@@ -102,7 +102,7 @@ class NetWork {
   			password: ops.password
   		}).then(function (res) {
   			if (res.status === 201) {
-  				sessionStorage.setItem('USERINFO', JSON.stringify(res.data))
+  				localStorage.setItem('USERINFO', JSON.stringify(res.data))
   			}
   			resolve(res)
   		})
