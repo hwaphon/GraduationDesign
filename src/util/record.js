@@ -3,7 +3,7 @@ import API from '../const/dataApi'
 
 class Record {
   save (ops) {
-    let userinfo = JSON.parse(sessionStorage.getItem('USERINFO'))
+    let userinfo = JSON.parse(localStorage.getItem('USERINFO'))
     if (userinfo && ops.url && ops.content) {
       let param = {
         where: JSON.stringify({
@@ -37,7 +37,7 @@ class Record {
   }
 
   get (callback) {
-    let userinfo = JSON.parse(sessionStorage.getItem('USERINFO'))
+    let userinfo = JSON.parse(localStorage.getItem('USERINFO'))
     let param = {
       where: JSON.stringify({"user":{"__type":"Pointer","className":"_User","objectId": userinfo.objectId }})
     }
