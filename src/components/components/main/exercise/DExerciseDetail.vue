@@ -51,6 +51,7 @@
           answers: [],
           subjects: [],
           showDes: false,
+          submited: false,
           showCheck: false,
           dialogVisible: false,
           tooltipMsg: '',
@@ -59,6 +60,10 @@
       },
       methods: {
         viewDes () {
+          if (!this.submited) {
+            this.tooltip.show('warning', '先提交答案才能查看解析哦')
+            return
+          }
           this.showDes = !this.showDes
           // 滚动到屏幕顶部
           $('html, body').animate({
@@ -66,6 +71,7 @@
           }, 'slow')
         },
         submitAnswer () {
+          this.submited = true
           let answers = this.answers
           let errors = 0
           this.subjects.forEach(function (subject, index) {
