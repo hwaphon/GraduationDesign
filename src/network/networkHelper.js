@@ -10,8 +10,8 @@ class NetWork {
 		this.http = axios.create({
 			timeout: 8000,
 			headers: {
-				"X-LC-Id": "5XOnPN1PWE6tOMdwNYcE9iLP-gzGzoHsz",
-				"X-LC-Key": "ezvcHFroQPn9zUtxsmPzbM2n",
+				"X-LC-Id": "gFdcFAfXzYqKWbPgev6qlnk7-gzGzoHsz",
+				"X-LC-Key": "7YlEjjzCLoPdQGsUsBfsB1RW",
 				"Content-Type": "application/json"
 			}
 		})

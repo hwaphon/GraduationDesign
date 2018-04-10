@@ -88,7 +88,11 @@
               .then(function (res) {
                 if (res.status === 200 || res.status === 201) {
                   let task = { ...param, objectId: res.data.objectId, createdAt: res.data.createdAt }
+                  task['local'] = true
                   _this.tasks.unshift(task)
+                  Cache.save(KEY, task, true)
+                  _this.total += 1
+                  sessionStorage.setItem(COUNT, JSON.stringify(_this.total))
                   _this.dialogVisible = false
                   _this.tooltip.show('success', '发布成功')
                   _this.newTask.title = ''
@@ -112,7 +116,7 @@
         getTasks (key, url, ops) {
           let _this = this
           let page = Math.floor(ops.skip / ops.limit)
-          let isExist = Cache.exsit(key, page, ops.limit)
+          let isExist = Cache.exsit(key, page, ops.limit, COUNT)
           if (isExist) {
             this.tasks = Cache.get(key, page, ops.limit)
             this.total = JSON.parse(sessionStorage.getItem(COUNT))

@@ -1,3 +1,4 @@
+// 缓存系统，可在模板文件中直接调用，不过在引用时需要初始化
 class Cache {
   constructor (global) {
     this._ = global.sessionStorage
@@ -27,13 +28,22 @@ class Cache {
     return JSON.parse(this._.getItem(key))
   }
 
-  exsit (key, page = 0, limit = 0) {
+  exsit (key, page = 0, limit = 0, countKey = '') {
     let result = this.getItemByKey(key)
     let requiredLength = page * limit
+    let count = JSON.parse(sessionStorage.getItem(countKey))
     if (!result) {
       return false
+    } else if (count && count === result.length) {
+      return true
     } else {
-      if (requiredLength >= result.length) {
+      let localCount = 0
+      result.forEach((item) => {
+        if (item['local']) {
+          localCount += 1
+        }
+      })
+      if (requiredLength >= result.length - localCount) {
         return false
       }
     }

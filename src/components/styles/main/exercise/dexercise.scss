@@ -96,9 +96,89 @@ i.add-exercise:hover {
 
 .input-label {
   margin-bottom: 16px;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+}
+
+.stars-input {
+  margin-right: 12px;
 }
 
 .file-upload {
   position: absolute;
   visibility: hidden;
+}
+
+.dexercise-item {
+  background-color: #FFF;
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+  height: 64px;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  color: #606266;
+  box-sizing: border-box;
+  cursor: pointer;
+  margin-bottom: 12px;
+}
+
+.dexercise-item > span {
+  line-height: 64px;
+  text-align: center;
+  color: #FFF;
+  font-size: 24px;
+  display: inline-block;
+  width: 64px;
+  background-color: #409EFF;
+  height: 100%;
+  position: relative;
+}
+
+.dexercise-item > span::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  border: 32px solid;
+  border-color: transparent transparent transparent #409EFF;
+  left: 100%;
+  top: 0px;
+}
+
+.dexercise-item-content {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  justify-content: center;
+  flex: 1 1 0px;
+  padding-left: 84px;
+}
+
+.dexercise-item-content > span {
+  font-size: 18px;
+  color: #409EFF;
+  margin-bottom: 4px;
+}
+
+.dexercise-item-content > p {
+  font-size: 14px;
+  color: #909399;
+}
+
+.dexercise-item-start {
+  width: 64px;
+  background-color: #409EFF;
+  color: #FFF;
+  height: 100%;
+  text-align: center;
+  font-size: 18px;
+  display: flex;
+  padding: 8px;
+  align-items: center;
+  justify-content: center;
+}
+
+.dexercise-item-stars {
+  margin-right: 84px;
 }

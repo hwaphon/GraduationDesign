@@ -10,8 +10,17 @@
     </div>
     <div class="msg-info">
       <span class="tooltips">我的动态</span>
-      <div class="msg" v-for="msg in messages">
+      <div class="msg" v-for="msg in currentMessage">
         <a :href="msg.url">{{ msg.content }} <span class="msg-date">{{ formateDate(msg.updatedAt) }}</span></a>
+      </div>
+      <div class="msg-info-pagination" v-if="messages.length > pageSize">
+        <el-pagination
+          background
+          :page-size="pageSize"
+          :current-page.sync="page"
+          :total="messages.length"
+          layout="prev, pager, next">
+        </el-pagination>
       </div>
     </div>
     <el-dialog
@@ -69,13 +78,23 @@
         tooltip: new Tooltip(this),
         avatarChange: false,
         bavatar: '',
-        isTeacher: false
+        isTeacher: false,
+        page: 1,
+        pageSize: 12,
+        currentMessage: []
       }
     },
     computed: {
       createdAt() {
         let date = new Date(this.date)
         return `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日`
+      }
+    },
+    watch: {
+      page (cp) {
+        let start = (cp - 1) * this.pageSize
+        let end = start + this.pageSize
+        this.currentMessage = this.messages.slice(start, end)
       }
     },
     methods: {
@@ -180,6 +199,7 @@
         Record.get().then(function (res) {
           if (res.status === 200) {
             _this.messages = res.data.results
+            _this.currentMessage = _this.messages.slice(0, _this.pageSize)
           } else {
             this.$message({
               type: 'warning',

@@ -52,7 +52,6 @@
 </template>
 
 <script>
-    import { Course } from '@/const/CourseData'
     import API from '@/const/dataApi'
     import Request from '@/network/networkHelper'
     import Cache from '@/util/cache'
@@ -100,7 +99,11 @@
                 .then(function (res) {
                   if (res.status === 200 || res.status === 201) {
                     let course = res.data
+                    course['local'] = true
                     _this.courses.unshift(course)
+                    _this.total += 1
+                    sessionStorage.setItem(COUNT, JSON.stringify(_this.total))
+                    Cache.save(_this.key, course, true)
                     param = {
                       title: _this.newCourse.title,
                       author: userinfo.username,
@@ -171,7 +174,7 @@
         getCourse (key, url, ops) {
           let _this = this
           let page = Math.floor(ops.skip / ops.limit)
-          let isExist = Cache.exsit(key, page, ops.limit)
+          let isExist = Cache.exsit(key, page, ops.limit, COUNT)
           if (isExist) {
             this.courses = Cache.get(key, page, ops.limit)
             this.total = JSON.parse(sessionStorage.getItem(COUNT))

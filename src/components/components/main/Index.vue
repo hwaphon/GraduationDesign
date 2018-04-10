@@ -1,7 +1,7 @@
 <template>
   <div class="index">
-    <div class="block">
-      <el-carousel trigger="click" height="380px">
+    <div class="block" :style="{ 'background': carouselBg }">
+      <el-carousel trigger="click" height="320px" type="card" @change="carouselChange">
         <el-carousel-item v-for="(item, index) in banners" :key="index">
           <img :src="item.picUrl" alt="carousel" class="carousel-img">
         </el-carousel-item>
@@ -63,7 +63,8 @@
           banners: [],
           currentSwiper: 0,
           courses: [],
-          exercises: []
+          exercises: [],
+          carouselBg: '#FFF'
         }
       },
       methods: {
@@ -72,6 +73,19 @@
             return text
           }
           return Helper.split(text, length) + '...'
+        },
+        carouselChange (index) {
+          let imgs = $('.carousel-img')
+          let _this = this
+          RGBaster.colors(imgs[index], {
+            success: (payload) => {
+              let reg = /\d+/g
+              let cnum = payload.dominant.match(reg)
+              let color = `rgba(${cnum[0]}, ${cnum[1]}, ${cnum[2]}, .3)`
+              _this.carouselBg = `linear-gradient(to bottom, ${color} 0%, rgb(249, 250, 252))`
+            },
+            exclude: [ 'rgb(0,0,0)' ]
+          })
         },
         router (id) {
           this.$router.push(`/course/detail/${id}`)

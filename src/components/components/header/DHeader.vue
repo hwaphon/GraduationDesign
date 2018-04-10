@@ -2,7 +2,7 @@
   <div class="dheader">
     <header @click="logoClick">
       <img :src="logo" alt="os logo">
-      <h1 id="dheader-logo-font">在线学习平台</h1>
+      <h1 id="dheader-logo-font">操作系统学习平台</h1>
     </header>
     <section>
       <ul class="dheader-menulist">

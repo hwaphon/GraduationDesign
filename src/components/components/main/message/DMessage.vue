@@ -71,7 +71,8 @@
         getMessages (key, url, ops) {
           let _this = this
           let page = Math.floor(ops.skip / ops.limit)
-          let isExist = Cache.exsit(key, page, ops.limit)
+          let isExist = Cache.exsit(key, page, ops.limit, COUNT)
+          let count = JSON.parse(sessionStorage.getItem(COUNT))
           if (isExist) {
             this.messages = Cache.get(key, page, ops.limit)
             this.total = JSON.parse(sessionStorage.getItem(COUNT))
@@ -81,7 +82,6 @@
               Cache.save(key, data)
               _this.messages = data
 
-              let count = JSON.parse(sessionStorage.getItem(COUNT))
               if (count === null && result.data.count) {
                 _this.total = result.data.count
                 sessionStorage.setItem(COUNT, JSON.stringify(_this.total))
@@ -110,8 +110,11 @@
             Request.post(API.MESSAGES, param)
               .then(function (res) {
                 if (res.status === 200 || res.status === 201) {
-                    let message = { avatar: userinfo.avatar, topic: _this.topic, objectId: res.data.objectId }
+                    let message = { avatar: userinfo.avatar, topic: _this.topic, objectId: res.data.objectId, local: true }
                     _this.messages.unshift(message)
+                    _this.total = _this.total + 1
+                    sessionStorage.setItem(COUNT, JSON.stringify(_this.total))
+                    Cache.save(KEY, message, true)
                     _this.dialogVisible = false
                     _this.topic = ''
                     _this.des = ''

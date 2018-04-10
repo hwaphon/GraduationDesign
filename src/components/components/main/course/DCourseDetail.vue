@@ -20,7 +20,7 @@
         </el-card>
         <el-card v-if="ppt">
           <div>
-            <a href="http://p0q1vpjvw.bkt.clouddn.com/%E5%AE%9E%E9%AA%8Cppt.pptx" class="download">点击下载课件</a>
+            <a :href="ppt">点击下载课件</a>
           </div>
         </el-card>
       </div>

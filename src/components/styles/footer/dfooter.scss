@@ -18,6 +18,21 @@
   align-items: center;
 }
 
+.fengche {
+  width: 32px;
+  height: 32px;
+  animation: fengche-rotate 0.8s linear 0s infinite;
+}
+
+@keyframes fengche-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 li {
   margin-right: 24px;
 }

@@ -126,3 +126,11 @@
   color: #67C23A;
   font-size: 12px;
 }
+
+.msg-info-pagination {
+  width: 80%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  margin: 16px 0px;
+}

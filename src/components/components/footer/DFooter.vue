@@ -5,6 +5,9 @@
         <a :href="item.src" target="_blank">{{ item.title }}</a>
       </li>
     </ul>
+    <div class="fengche">
+      <img src="http://p0q1vpjvw.bkt.clouddn.com/fengche.png">
+    </div>
     <div class="copyright">
       &copy;14级软件工程-高华峰
     </div>
@@ -16,10 +19,8 @@
       data () {
         return {
           items: [
-            { title: '关于我们', src: '' },
             { title: '我的博客', src: 'http://hwaphon.top/' },
-            { title: '我的 Github', src: 'https://github.com/hwaphon'},
-            { title: '友情链接', src: '' }
+            { title: '我的 Github', src: 'https://github.com/hwaphon'}
           ]
         }
       }
