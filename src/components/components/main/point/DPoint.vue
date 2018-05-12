@@ -33,7 +33,9 @@
                 <p>7. 计算机的心智操作系统之哲学原理，邹恒明，机械工业出版社</p>
               </div>
               <div class="dpoint-download" v-if="index == 11">
-                <p>为了方便在本地查看教学大纲，特提供 Word 版本，<a href="http://p0q1vpjvw.bkt.clouddn.com/system.doc" download="操作系统教学大纲">点击下载</a></p>
+                <p>为了方便在本地查看教学大纲，特提供 Word 版本，
+                  <a href="http://p0q1vpjvw.bkt.clouddn.com/%E7%90%86%E8%AE%BA%E7%B1%BB%E8%AF%BE%E7%A8%8B%E5%A4%A7%E7%BA%B2-OS-170805.docx" download="操作系统教学大纲">点击下载</a>
+                </p>
               </div>
             </el-col>
           </el-row>
