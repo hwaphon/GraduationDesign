@@ -1,5 +1,5 @@
 const Icon = {
-  oslogo: 'http://p0q1vpjvw.bkt.clouddn.com/oslogo.png',
+  oslogo: 'http://p0q1vpjvw.bkt.clouddn.com/ahnulogo.jpg',
   swipers: [
     { src: 'http://p0q1vpjvw.bkt.clouddn.com/swiper1.jpg' },
     { src: 'http://p0q1vpjvw.bkt.clouddn.com/swiper2.jpg' },

@@ -9,7 +9,7 @@
       <img src="http://p0q1vpjvw.bkt.clouddn.com/fengche.png">
     </div>
     <div class="copyright">
-      &copy;14级软件工程-高华峰
+      &copy;安徽师范大学-14级软件工程-高华峰
     </div>
   </div>
 </template>
