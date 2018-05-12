@@ -9,6 +9,7 @@ import DTask from '@/components/components/main/task/DTask'
 import DUserCenter from '@/components/components/user/UserCenter'
 import DMessage from '@/components/components/main/message/DMessage'
 import DMessageDetail from '@/components/components/main/message/DMessageDetail'
+import DPoint from '@/components/components/main/point/DPoint'
 
 Vue.use(Router)
 
@@ -63,6 +64,11 @@ export default new Router({
       name: 'MessageDetail',
       path: '/message/detail/:id',
       component: DMessageDetail
+    },
+    {
+      name: 'Point',
+      path: '/point',
+      component: DPoint
     }
   ]
 })
